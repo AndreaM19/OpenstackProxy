@@ -19,7 +19,7 @@ public class SubnetRestInterface {
 		return OpenstackNetProxyConstants.TEST_MESSAGE;
 	}
 	
-	//GET Subnets
+	//Show Subnets
 	@GET
 	@Path("/v2.0/subnets/{subnetId}")
 	@Produces(MediaType.APPLICATION_JSON)

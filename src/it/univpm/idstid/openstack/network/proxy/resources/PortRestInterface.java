@@ -19,7 +19,7 @@ public class PortRestInterface {
 		return OpenstackNetProxyConstants.TEST_MESSAGE;
 	}
 	
-	//GET Ports
+	//Show Ports
 	@GET
 	@Path("/v2.0/ports/{portId}")
 	@Produces(MediaType.APPLICATION_JSON)
