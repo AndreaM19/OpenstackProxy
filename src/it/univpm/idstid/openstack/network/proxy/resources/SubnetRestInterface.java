@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
@@ -35,21 +36,8 @@ public class SubnetRestInterface {
 	@GET
 	@Path("/v2.0/subnets/{subnetId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Subnet showNetwork(@PathParam("subnetId") String subnetId){
-		HttpURLConnection conn=null;
-		JSONObject json=null;
-		try {
-			conn = HTTPConnector.HTTPConnect(new URL(""), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String jsonText=JsonUtility.readAll(br);
-			//set the json file content
-			json = new JSONObject(jsonText);
-			br.close();
-			HTTPConnector.HTTPDisconnect(conn);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	public Subnet showNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException{
+		JSONObject json=HTTPConnector.getJsonResponse(new URL(""), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
 		
 		//Active parsing of the json file and receive a Subnet object
 		Subnet sub=JsonUtility.SubnetJsonParser(json);

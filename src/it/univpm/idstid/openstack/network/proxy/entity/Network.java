@@ -1,5 +1,6 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+
 public class Network {
 	
 	private String networkID="-";

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Network;
@@ -13,12 +14,14 @@ import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
 
 import javax.json.Json;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.json.JSONObject;
 
@@ -38,29 +41,7 @@ public class NetworkRestInterface {
 	@Path("/v2.0/networks")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Network listNetwork(){
-		HttpURLConnection conn=null;
-		JSONObject json=null;
-		try {
-			conn = HTTPConnector.HTTPConnect(new URL("http://localhost:8080/OpenstackProxy/test/resourcetester"), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-			System.out.println("Output from Server .... \n");
-			String jsonText=JsonUtility.readAll(br);
-			json = new JSONObject(jsonText);
-			System.out.println(json.toString());
-			br.close();
-			HTTPConnector.HTTPDisconnect(conn);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		Network net= new Network();
-
-		net.setIpAdd(json.getString("portID"));
-		net.setAdminStateUp(json.getBoolean("adminStateUp"));
-		net.setSubnets("subnets");
-		System.out.println("prova console");
 		return net;
 	}
 
@@ -68,22 +49,9 @@ public class NetworkRestInterface {
 	@GET
 	@Path("/v2.0/networks/{networkId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Network showNetwork(@PathParam("networkId") String networkId){
+	public Network showNetwork(@PathParam("networkId") String networkId) throws MalformedURLException{
 		
-		HttpURLConnection conn=null;
-		JSONObject json=null;
-		try {
-			conn = HTTPConnector.HTTPConnect(new URL("http://localhost:8080/OpenstackProxy/proxy/test/resource"), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
-			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-			String jsonText=JsonUtility.readAll(br);
-			//set the json file content
-			json = new JSONObject(jsonText);
-			br.close();
-			HTTPConnector.HTTPDisconnect(conn);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		JSONObject json=HTTPConnector.getJsonResponse(new URL("http://localhost:8080/OpenstackProxy/proxy/test/resource"), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
 		
 		//Active parsing of the json file and receive a Network object
 		//Network net=JsonUtility.NetJsonParser(json);
@@ -98,14 +66,13 @@ public class NetworkRestInterface {
 
 	//Create Networks
 	@POST
-	@Path("/v2.0/{network}")
-	@Produces(MediaType.APPLICATION_JSON)
-	public String createNetwork(@PathParam("network") String networkId){
-		Json networkData;//This json file is for network creation
-		//tempFlag is used for process emulation
-		boolean tempFlag=true;
-		if(tempFlag)return OpenstackNetProxyConstants.MESSAGE_DONE_WITH_SUCCESS;
-		else return OpenstackNetProxyConstants.MESSAGE_FAIL;
+	//@Path("/v2.0/network")
+	@Path("post")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response createNetwork(final Test net){
+		String result = "Product created : " + net.getTestName();
+		System.out.println(result);
+		return Response.status(201).entity(result).build();
 	}
 
 	
