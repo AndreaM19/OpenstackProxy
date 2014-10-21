@@ -2,15 +2,15 @@ package it.univpm.idstid.openstack.network.proxy.entity;
 
 public class Network {
 	
-	private String networkID;
-	private String networkName;
+	private String networkID="-";
+	private String networkName="-";
 	private boolean shared=false;
-	private String tenantUuID;
-	private String ipAdd;
-	private String allocationPools;
+	private String tenantUuID="-";
+	private String ipAdd="-";
+	private String allocationPools="-";
 	private boolean adminStateUp=false;
-	private String status;
-	private String subnets;
+	private String status="-";
+	private String subnets="-";
 	
 	//---------------------------------------------------------------
 	//Getter and Setter

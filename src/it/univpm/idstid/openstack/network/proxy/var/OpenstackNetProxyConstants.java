@@ -1,10 +1,9 @@
 package it.univpm.idstid.openstack.network.proxy.var;
 
 public class OpenstackNetProxyConstants {
-	
-	public static final String TEST_MESSAGE="OK";
-	
+		
 	//Application messages
+	public static final String MESSAGE_TEST="OK";
 	public static final String MESSAGE_DONE_WITH_SUCCESS="Done";
 	public static final String MESSAGE_FAIL="Fail";
 	

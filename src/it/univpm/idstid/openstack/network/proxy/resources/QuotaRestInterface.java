@@ -16,7 +16,7 @@ public class QuotaRestInterface {
 	@Path("/test")
 	@Produces("text/plain")
 	public String resourceTest(){
-		return OpenstackNetProxyConstants.TEST_MESSAGE;
+		return OpenstackNetProxyConstants.MESSAGE_TEST;
 	}
 
 	//List Quotas

@@ -2,18 +2,18 @@ package it.univpm.idstid.openstack.network.proxy.entity;
 
 public class Port {
 
-	private String portID;
-	private String portName;
-	private String ipAdd;
-	private String macAddress;
-	private String networkId;
+	private String portID="-";
+	private String portName="-";
+	private String ipAdd="-";
+	private String macAddress="-";
+	private String networkID="-";
 	private boolean adminStateUp=false;
-	private String status;
-	private String fixedIPs;
-	private String deviceID;
-	private String deviceOwner;
-	private String tenantUuID;
-	private String securityGroups;
+	private String status="-";
+	private String fixedIPs="-";
+	private String deviceID="-";
+	private String deviceOwner="-";
+	private String tenantUuID="-";
+	private String securityGroups="-";
 	
 	//---------------------------------------------------------------
 	//Getter and Setter
@@ -43,11 +43,11 @@ public class Port {
 	public void setMacAddress(String macAddress) {
 		this.macAddress = macAddress;
 	}
-	public String getNetworkId() {
-		return networkId;
+	public String getNetworkID() {
+		return networkID;
 	}
-	public void setNetworkId(String networkId) {
-		this.networkId = networkId;
+	public void setNetworkID(String networkID) {
+		this.networkID = networkID;
 	}
 	public boolean isAdminStateUp() {
 		return adminStateUp;

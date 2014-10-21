@@ -4,10 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Network;
+import it.univpm.idstid.openstack.network.proxy.entity.Test;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -24,12 +24,13 @@ import org.json.JSONObject;
 
 @Path("/network")
 public class NetworkRestInterface {
-
+	
+	//Test if the resource is active
 	@GET
 	@Path("/test")
 	@Produces("text/plain")
 	public String resourceTest(){
-		return OpenstackNetProxyConstants.TEST_MESSAGE;
+		return OpenstackNetProxyConstants.MESSAGE_TEST;
 	}
 
 	//List Networks
@@ -40,7 +41,7 @@ public class NetworkRestInterface {
 		HttpURLConnection conn=null;
 		JSONObject json=null;
 		try {
-			conn = HTTPConnector.HTTPConnect(new URL("http://localhost:8080/OpenstackProxy/proxy/port/v2.0/ports/undi7y3kjj3y"), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+			conn = HTTPConnector.HTTPConnect(new URL("http://localhost:8080/OpenstackProxy/test/resourcetester"), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
 			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 			System.out.println("Output from Server .... \n");
@@ -55,9 +56,10 @@ public class NetworkRestInterface {
 		}
 		
 		Network net= new Network();
-//		net.setIpAdd((String)json.get("adminStateUp"));
+
+		net.setIpAdd(json.getString("portID"));
+		net.setAdminStateUp(json.getBoolean("adminStateUp"));
 		net.setSubnets("subnets");
-//		net.setIpAdd("ipaddress");
 		System.out.println("prova console");
 		return net;
 	}
@@ -67,8 +69,30 @@ public class NetworkRestInterface {
 	@Path("/v2.0/networks/{networkId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Network showNetwork(@PathParam("networkId") String networkId){
-		Network net= new Network();
-		net.setNetworkID(networkId);
+		
+		HttpURLConnection conn=null;
+		JSONObject json=null;
+		try {
+			conn = HTTPConnector.HTTPConnect(new URL("http://localhost:8080/OpenstackProxy/proxy/test/resource"), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+			BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			String jsonText=JsonUtility.readAll(br);
+			//set the json file content
+			json = new JSONObject(jsonText);
+			br.close();
+			HTTPConnector.HTTPDisconnect(conn);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//Active parsing of the json file and receive a Network object
+		//Network net=JsonUtility.NetJsonParser(json);
+		Network net=null;
+		Test t=JsonUtility.TestJsonParser(json);
+//		net.setNetworkID(networkId);
+		System.out.println(t.getTestID());
+		System.out.println(t.getTestName());
+		System.out.println(t.getTestFlag());
 		return net;
 	}
 
@@ -84,6 +108,6 @@ public class NetworkRestInterface {
 		else return OpenstackNetProxyConstants.MESSAGE_FAIL;
 	}
 
-
+	
 
 }

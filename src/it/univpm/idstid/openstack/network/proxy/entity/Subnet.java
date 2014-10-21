@@ -2,18 +2,18 @@ package it.univpm.idstid.openstack.network.proxy.entity;
 
 public class Subnet {
 
-	private String subnetID;
-	private String subnetName;
-	private String cidr;
-	private String allocationPools;
-	private String ipAdd;
-	private String networkID;
-	private String ipVersion;
-	private String gatewayIP;
-	private String dnsNameServers;
-	private String hostRoutes;
+	private String subnetID="-";
+	private String subnetName="-";
+	private String cidr="-";
+	private String allocationPools="-";
+	private String ipAdd="-";
+	private String networkID="-";
+	private String ipVersion="-";
+	private String gatewayIP="-";
+	private String dnsNameServers="-";
+	private String hostRoutes="-";
 	private boolean enableDHCP=false;
-	private String tenantUuID;
+	private String tenantUuID="-";
 
 
 	//---------------------------------------------------------------
