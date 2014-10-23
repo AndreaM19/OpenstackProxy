@@ -13,6 +13,24 @@ public class Network {
 	private String status="-";
 	private String subnets="-";
 	
+	public Network(){
+		
+	}
+	
+	public Network(String networkID, String networkName, boolean shared,
+			String tenantUuID, String ipAdd, String allocationPools,
+			boolean adminStateUp, String status, String subnets) {
+		this.networkID = networkID;
+		this.networkName = networkName;
+		this.shared = shared;
+		this.tenantUuID = tenantUuID;
+		this.ipAdd = ipAdd;
+		this.allocationPools = allocationPools;
+		this.adminStateUp = adminStateUp;
+		this.status = status;
+		this.subnets = subnets;
+	}
+	
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
@@ -86,6 +104,6 @@ public class Network {
 
 	public String getSubnets() {
 		return subnets;
-	}
+	}	
 
 }

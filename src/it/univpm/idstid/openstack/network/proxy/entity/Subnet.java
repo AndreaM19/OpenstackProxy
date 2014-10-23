@@ -14,6 +14,28 @@ public class Subnet {
 	private String hostRoutes="-";
 	private boolean enableDHCP=false;
 	private String tenantUuID="-";
+	
+	public Subnet(){
+		
+	}
+	
+	public Subnet(String subnetID, String subnetName, String cidr,
+			String allocationPools, String ipAdd, String networkID,
+			String ipVersion, String gatewayIP, String dnsNameServers,
+			String hostRoutes, boolean enableDHCP, String tenantUuID) {
+		this.subnetID = subnetID;
+		this.subnetName = subnetName;
+		this.cidr = cidr;
+		this.allocationPools = allocationPools;
+		this.ipAdd = ipAdd;
+		this.networkID = networkID;
+		this.ipVersion = ipVersion;
+		this.gatewayIP = gatewayIP;
+		this.dnsNameServers = dnsNameServers;
+		this.hostRoutes = hostRoutes;
+		this.enableDHCP = enableDHCP;
+		this.tenantUuID = tenantUuID;
+	}
 
 
 	//---------------------------------------------------------------

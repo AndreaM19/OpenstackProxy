@@ -16,9 +16,9 @@ public class HTTPConnector {
 	public static HttpURLConnection HTTPConnect(URL urlToConnect, String method, String responseType) throws IOException{
 		HttpURLConnection conn = (HttpURLConnection) urlToConnect.openConnection();
 		conn.setRequestMethod(method);
-		conn.setRequestProperty("Accept", responseType);	
+		if(responseType!=null)conn.setRequestProperty("Accept", responseType);	
 		if (conn.getResponseCode() != 200) {
-			throw new RuntimeException("Failed : HTTP error code : " + conn.getResponseCode());
+			throw new RuntimeException(OpenstackNetProxyConstants.MESSAGE_FAIL_HTTP_CONNECTION + conn.getResponseCode());
 		}
 		return conn;
 	}

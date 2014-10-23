@@ -11,7 +11,7 @@ public class ApplicationConfig extends Application {
 	public Set<Class<?>> getClasses() {
 		return getRestResourceClasses();
 	}
-	
+
 	//Define the resources that can be call from the REST interface 
 	private Set<Class<?>> getRestResourceClasses() {
 		Set<Class<?>> resources = new java.util.HashSet<Class<?>>();
@@ -22,4 +22,5 @@ public class ApplicationConfig extends Application {
 		resources.add(it.univpm.idstid.openstack.network.proxy.resources.TestRestInterface.class);
 		return resources;
 	}
+
 }

@@ -1,9 +1,6 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
-import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement
 public class Test {
 
 	private String testID="1nj6n49ksl";
@@ -39,7 +36,7 @@ public class Test {
 	public boolean getTestFlag() {
 		return testFlag;
 	}
-	public void setTestFlag(Boolean testFlag) {
+	public void setTestFlag(boolean testFlag) {
 		this.testFlag = testFlag;
 	}
 }

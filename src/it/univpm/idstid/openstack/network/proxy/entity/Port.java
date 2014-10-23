@@ -14,11 +14,33 @@ public class Port {
 	private String deviceOwner="-";
 	private String tenantUuID="-";
 	private String securityGroups="-";
-	
+
+	public Port(){
+
+	}
+
+	public Port(String portID, String portName, String ipAdd,
+			String macAddress, String networkID, boolean adminStateUp,
+			String status, String fixedIPs, String deviceID,
+			String deviceOwner, String tenantUuID, String securityGroups) {
+		this.portID = portID;
+		this.portName = portName;
+		this.ipAdd = ipAdd;
+		this.macAddress = macAddress;
+		this.networkID = networkID;
+		this.adminStateUp = adminStateUp;
+		this.status = status;
+		this.fixedIPs = fixedIPs;
+		this.deviceID = deviceID;
+		this.deviceOwner = deviceOwner;
+		this.tenantUuID = tenantUuID;
+		this.securityGroups = securityGroups;
+	}
+
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
-	
+
 	public String getPortID() {
 		return portID;
 	}
@@ -91,4 +113,5 @@ public class Port {
 	public void setSecurityGroups(String securityGroups) {
 		this.securityGroups = securityGroups;
 	}
+
 }
