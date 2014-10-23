@@ -1,117 +1,48 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import java.util.ArrayList;
+
+
 public class Subnet {
 
-	private String subnetID="-";
-	private String subnetName="-";
-	private String cidr="-";
-	private String allocationPools="-";
-	private String ipAdd="-";
-	private String networkID="-";
-	private String ipVersion="-";
-	private String gatewayIP="-";
-	private String dnsNameServers="-";
-	private String hostRoutes="-";
-	private boolean enableDHCP=false;
-	private String tenantUuID="-";
+	private SubnetData subnet=new SubnetData();
+	private ArrayList<SubnetData> subnets=new ArrayList<SubnetData>();
 	
+	//Empty constructor
 	public Subnet(){
-		
+
 	}
 	
-	public Subnet(String subnetID, String subnetName, String cidr,
-			String allocationPools, String ipAdd, String networkID,
-			String ipVersion, String gatewayIP, String dnsNameServers,
-			String hostRoutes, boolean enableDHCP, String tenantUuID) {
-		this.subnetID = subnetID;
-		this.subnetName = subnetName;
-		this.cidr = cidr;
-		this.allocationPools = allocationPools;
-		this.ipAdd = ipAdd;
-		this.networkID = networkID;
-		this.ipVersion = ipVersion;
-		this.gatewayIP = gatewayIP;
-		this.dnsNameServers = dnsNameServers;
-		this.hostRoutes = hostRoutes;
-		this.enableDHCP = enableDHCP;
-		this.tenantUuID = tenantUuID;
+	//Constructor for a single Subnet entity
+	public Subnet(SubnetData subnet) {
+		this.subnet = subnet;
+	}
+	
+	//Constructor for multiple Subnet entities
+	public Subnet(ArrayList<SubnetData> subnets) {
+		this.subnets = subnets;
 	}
 
-
+		
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
-	public String getSubnetID() {
-		return subnetID;
+	
+	public SubnetData getSubnet() {
+		return subnet;
 	}
-	public void setSubnetID(String subnetID) {
-		this.subnetID = subnetID;
+
+	public void setSubnet(SubnetData subnet) {
+		this.subnet = subnet;
 	}
-	public String getSubnetName() {
-		return subnetName;
+
+	public ArrayList<SubnetData> getSubnets() {
+		return subnets;
 	}
-	public void setSubnetName(String subnetName) {
-		this.subnetName = subnetName;
+
+	public void setSubnets(ArrayList<SubnetData> subnets) {
+		this.subnets = subnets;
 	}
-	public String getCidr() {
-		return cidr;
-	}
-	public void setCidr(String cidr) {
-		this.cidr = cidr;
-	}
-	public String getAllocationPools() {
-		return allocationPools;
-	}
-	public void setAllocationPools(String allocationPools) {
-		this.allocationPools = allocationPools;
-	}
-	public String getIpAdd() {
-		return ipAdd;
-	}
-	public void setIpAdd(String ipAdd) {
-		this.ipAdd = ipAdd;
-	}
-	public String getNetworkID() {
-		return networkID;
-	}
-	public void setNetworkID(String networkID) {
-		this.networkID = networkID;
-	}
-	public String getIpVersion() {
-		return ipVersion;
-	}
-	public void setIpVersion(String ipVersion) {
-		this.ipVersion = ipVersion;
-	}
-	public String getGatewayIP() {
-		return gatewayIP;
-	}
-	public void setGatewayIP(String gatewayIP) {
-		this.gatewayIP = gatewayIP;
-	}
-	public String getDnsNameServers() {
-		return dnsNameServers;
-	}
-	public void setDnsNameServers(String dnsNameServers) {
-		this.dnsNameServers = dnsNameServers;
-	}
-	public String getHostRoutes() {
-		return hostRoutes;
-	}
-	public void setHostRoutes(String hostRoutes) {
-		this.hostRoutes = hostRoutes;
-	}
-	public boolean isEnableDHCP() {
-		return enableDHCP;
-	}
-	public void setEnableDHCP(boolean enableDHCP) {
-		this.enableDHCP = enableDHCP;
-	}
-	public String getTenantUuID() {
-		return tenantUuID;
-	}
-	public void setTenantUuID(String tenantUuID) {
-		this.tenantUuID = tenantUuID;
-	}
+
 
 }

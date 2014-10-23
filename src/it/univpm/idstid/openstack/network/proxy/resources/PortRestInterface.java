@@ -56,7 +56,7 @@ public class PortRestInterface {
 	@Path("/v2.0/port")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createPort(final Port port){
-		String result = "Product created : " + port.getPortName();
+		String result = "Product created : " + port.getPort().getPortName();
 		System.out.println(result);//print resource name in the server console
 		return Response.status(201).entity(result).build();
 	}

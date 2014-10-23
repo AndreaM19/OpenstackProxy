@@ -57,7 +57,7 @@ public class SubnetRestInterface {
 	@Path("/v2.0/subnet")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createSubnet(final Subnet sub){
-		String result = "Product created : " + sub.getSubnetName();
+		String result = "Product created : " + sub.getSubnet().getSubnetName();
 		System.out.println(result);//print resource name in the server console
 		return Response.status(201).entity(result).build();
 	}

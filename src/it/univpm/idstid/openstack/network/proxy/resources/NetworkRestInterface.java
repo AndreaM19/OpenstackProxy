@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Network;
+import it.univpm.idstid.openstack.network.proxy.entity.Test;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -54,15 +55,17 @@ public class NetworkRestInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Network showNetwork(@PathParam("networkId") String networkId) throws MalformedURLException{
 
-		JSONObject json=HTTPConnector.getJsonResponse(new URL("http://localhost:8080/OpenstackTester/tester/v2.0/networks/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
-
+		JSONObject json=HTTPConnector.getJsonResponse(new URL("http://localhost:8080/OpenstackProxy/proxy/test/resource/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+		
+		System.out.println("http://localhost:8080/OpenstackProxy/proxy/test/resource/"+networkId);
+		
 		//Active parsing of the json file and receive a Network object
-		Network net=JsonUtility.NetJsonParser(json);
-		//		Network net=null;
-		//		Test t=JsonUtility.TestJsonParser(json);
-		//		System.out.println(t.getTestID());
-		//		System.out.println(t.getTestName());
-		//		System.out.println(t.getTestFlag());
+		//		Network net=JsonUtility.NetJsonParser(json);
+		Network net=null;
+		Test t=JsonUtility.TestJsonParser(json);
+		System.out.println(t.getTest().getTestID());
+		System.out.println(t.getTest().getTestName());
+		System.out.println(t.getTest().getTestFlag());
 		return net;
 	}
 
@@ -71,7 +74,7 @@ public class NetworkRestInterface {
 	@Path("/v2.0/network")
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response createNetwork(final Network net){
-		String result = "Product created : " + net.getNetworkName();
+		String result = "Product created : " + net.getNetwork().getNetworkName();
 		System.out.println(result);//print resource name in the server console
 		return Response.status(201).entity(result).build();
 	}

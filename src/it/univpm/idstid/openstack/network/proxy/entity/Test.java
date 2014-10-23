@@ -1,42 +1,46 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import java.util.ArrayList;
+
 
 public class Test {
 
-	private String testID="1nj6n49ksl";
-	private String testName="This is a test ID";
-	private boolean testFlag=true;
-
+	private TestData test;
+	private ArrayList<TestData> tests;
+	
+	//Empty constructor
 	public Test(){
-	
+
 	}
 	
-	public Test(String testID, String testName, boolean testFlag){
-		this.testID=testID;
-		this.testName=testName;
-		this.testFlag=testFlag;
+	//Constructor for a single Test entity
+	public Test(TestData test) {
+		this.test = test;
 	}
 	
+	//Constructor for multiple Test entities
+	public Test(ArrayList<TestData> tests) {
+		this.tests = tests;
+	}
+
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
+	
+	public TestData getTest() {
+		return test;
+	}
 
-	public String getTestID() {
-		return testID;
+	public void setTest(TestData test) {
+		this.test = test;
 	}
-	public void setTestID(String testID) {
-		this.testID = testID;
+
+	public ArrayList<TestData> getTests() {
+		return tests;
 	}
-	public String getTestName() {
-		return testName;
+
+	public void setTests(ArrayList<TestData> tests) {
+		this.tests = tests;
 	}
-	public void setTestName(String testName) {
-		this.testName = testName;
-	}
-	public boolean getTestFlag() {
-		return testFlag;
-	}
-	public void setTestFlag(boolean testFlag) {
-		this.testFlag = testFlag;
-	}
+
 }

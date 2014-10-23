@@ -1,54 +1,46 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import java.util.ArrayList;
+
 public class Quota {
 	
-	private String tenantId;
-	private int subnet=0;
-	private int router=0;
-	private int network=0;
-	private int port=0;
-	private int floatingIp=0;
+	private QuotaData quota=new QuotaData();
+	private ArrayList<QuotaData> quotas=new ArrayList<QuotaData>();
+	
+	//Empty constructor
+	public Quota(){
 
+	}
+	
+	//Constructor for a single Subnet entity
+	public Quota(QuotaData quota) {
+		this.quota = quota;
+	}
+	
+	//Constructor for multiple Subnet entities
+	public Quota(ArrayList<QuotaData> quotas) {
+		this.quotas = quotas;
+	}
+
+			
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
-
-	public String getTenantId() {
-		return tenantId;
-	}
-	public void setTenantId(String tenantId) {
-		this.tenantId = tenantId;
-	}
 	
-	public int getSubnet() {
-		return subnet;
+	public QuotaData getQuota() {
+		return quota;
 	}
-	public void setSubnet(int subnet) {
-		this.subnet = subnet;
+
+	public void setQuota(QuotaData quota) {
+		this.quota = quota;
 	}
-	public int getRouter() {
-		return router;
+
+	public ArrayList<QuotaData> getQuotas() {
+		return quotas;
 	}
-	public void setRouter(int router) {
-		this.router = router;
-	}
-	public int getNetwork() {
-		return network;
-	}
-	public void setNetwork(int network) {
-		this.network = network;
-	}
-	public int getPort() {
-		return port;
-	}
-	public void setPort(int port) {
-		this.port = port;
-	}
-	public int getFloatingIp() {
-		return floatingIp;
-	}
-	public void setFloatingIp(int floatingIp) {
-		this.floatingIp = floatingIp;
+
+	public void setQuotas(ArrayList<QuotaData> quotas) {
+		this.quotas = quotas;
 	}
 
 }

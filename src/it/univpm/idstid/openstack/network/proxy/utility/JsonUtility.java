@@ -1,9 +1,13 @@
 package it.univpm.idstid.openstack.network.proxy.utility;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Network;
+import it.univpm.idstid.openstack.network.proxy.entity.NetworkData;
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
+import it.univpm.idstid.openstack.network.proxy.entity.PortData;
 import it.univpm.idstid.openstack.network.proxy.entity.Subnet;
+import it.univpm.idstid.openstack.network.proxy.entity.SubnetData;
 import it.univpm.idstid.openstack.network.proxy.entity.Test;
+import it.univpm.idstid.openstack.network.proxy.entity.TestData;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -29,65 +33,68 @@ public class JsonUtility {
 
 	//Parser for Network entity
 	public static Network NetJsonParser(JSONObject json){
-		Network net=new Network();
+		Network net=new Network(new NetworkData());
+		JSONObject j=new JSONObject(json.get("network").toString());
 		//Parsing the received Json file
-		net.setAdminStateUp(json.getBoolean("adminStateUp"));
-		net.setAllocationPools(json.getString("allocationPools"));
-		net.setIpAdd(json.getString("ipAdd"));
-		net.setNetworkID(json.getString("networkID"));
-		net.setNetworkName(json.getString("networkName"));
-		net.setShared(json.getBoolean("shared"));
-		net.setStatus(json.getString("status"));
-		net.setSubnets(json.getString("subnets"));
-		net.setTenantUuID(json.getString("tenantUuID"));
+		net.getNetwork().setAdminStateUp(j.getBoolean("adminStateUp"));
+		net.getNetwork().setAllocationPools(j.getString("allocationPools"));
+		net.getNetwork().setIpAdd(j.getString("ipAdd"));
+		net.getNetwork().setNetworkID(j.getString("networkID"));
+		net.getNetwork().setNetworkName(j.getString("networkName"));
+		net.getNetwork().setShared(j.getBoolean("shared"));
+		net.getNetwork().setStatus(j.getString("status"));
+		net.getNetwork().setSubnets(j.getString("subnets"));
+		net.getNetwork().setTenantUuID(j.getString("tenantUuID"));
 		return net;
 	}
 
 	//Parser for Subnet entity
 	public static Subnet SubnetJsonParser(JSONObject json){
-		Subnet subnet=new Subnet();
+		Subnet subnet=new Subnet(new SubnetData());
+		JSONObject j=new JSONObject(json.get("subnet").toString());
 		//Parsing the received Json file		
-		subnet.setAllocationPools(json.getString("allocationPools"));
-		subnet.setCidr(json.getString("cidr"));
-		subnet.setDnsNameServers(json.getString("dnsNameServers"));
-		subnet.setEnableDHCP(json.getBoolean("enableDHCP"));
-		subnet.setGatewayIP(json.getString("gatewayIP"));
-		subnet.setHostRoutes(json.getString("hostRoutes"));
-		subnet.setIpAdd(json.getString("ipAdd"));
-		subnet.setIpVersion(json.getString("ipVersion"));
-		subnet.setNetworkID(json.getString("networkID"));
-		subnet.setSubnetID(json.getString("subnetID"));
-		subnet.setSubnetName(json.getString("subnetName"));
-		subnet.setTenantUuID(json.getString("tenantUuID"));
+		subnet.getSubnet().setAllocationPools(j.getString("allocationPools"));
+		subnet.getSubnet().setCidr(j.getString("cidr"));
+		subnet.getSubnet().setDnsNameServers(j.getString("dnsNameServers"));
+		subnet.getSubnet().setEnableDHCP(j.getBoolean("enableDHCP"));
+		subnet.getSubnet().setGatewayIP(j.getString("gatewayIP"));
+		subnet.getSubnet().setHostRoutes(j.getString("hostRoutes"));
+		subnet.getSubnet().setIpAdd(j.getString("ipAdd"));
+		subnet.getSubnet().setIpVersion(j.getString("ipVersion"));
+		subnet.getSubnet().setNetworkID(j.getString("networkID"));
+		subnet.getSubnet().setSubnetID(j.getString("subnetID"));
+		subnet.getSubnet().setSubnetName(j.getString("subnetName"));
+		subnet.getSubnet().setTenantUuID(j.getString("tenantUuID"));
 		return subnet;
 	}
 
 	//Parser for Port entity
 	public static Port PortJsonParser(JSONObject json){
-		Port port=new Port();
+		Port port=new Port(new PortData());
+		JSONObject j=new JSONObject(json.get("port").toString());
 		//Parsing the received Json file		
-		port.setAdminStateUp(json.getBoolean("adminStateUp"));
-		port.setDeviceID(json.getString("deviceID"));
-		port.setDeviceOwner(json.getString("deviceOwner"));
-		port.setFixedIPs(json.getString("fixedIPs"));
-		port.setIpAdd(json.getString("ipAdd"));
-		port.setMacAddress(json.getString("macAddress"));
-		port.setNetworkID(json.getString("networkID"));
-		port.setPortID(json.getString("portID"));
-		port.setPortName(json.getString("portName"));
-		port.setSecurityGroups(json.getString("securityGroups"));
-		port.setStatus(json.getString("status"));
-		port.setTenantUuID(json.getString("tenantUuID"));
+		port.getPort().setAdminStateUp(j.getBoolean("adminStateUp"));
+		port.getPort().setDeviceID(j.getString("deviceID"));
+		port.getPort().setDeviceOwner(j.getString("deviceOwner"));
+		port.getPort().setFixedIPs(j.getString("fixedIPs"));
+		port.getPort().setIpAdd(j.getString("ipAdd"));
+		port.getPort().setMacAddress(j.getString("macAddress"));
+		port.getPort().setNetworkID(j.getString("networkID"));
+		port.getPort().setPortID(j.getString("portID"));
+		port.getPort().setPortName(j.getString("portName"));
+		port.getPort().setSecurityGroups(j.getString("securityGroups"));
+		port.getPort().setStatus(j.getString("status"));
+		port.getPort().setTenantUuID(j.getString("tenantUuID"));
 		return port;
 	}
 
 	//Parser for Test entity
 	public static Test TestJsonParser(JSONObject json){
-		Test t=new Test();
-		//Parsing the received Json file		
-		t.setTestID(json.getString("testID"));
-		t.setTestName(json.getString("testName"));
-		t.setTestFlag(json.getBoolean("testFlag"));
+		Test t=new Test(new TestData());
+		JSONObject j=new JSONObject(json.get("test").toString());
+		t.getTest().setTestID(j.getString("testID"));
+		t.getTest().setTestName(j.getString("testName"));
+		t.getTest().setTestFlag(j.getBoolean("testFlag"));
 		return t;
 	}
 

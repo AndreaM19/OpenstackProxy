@@ -34,7 +34,6 @@ public class QuotaRestInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Quota showNetwork(@PathParam("tenantId") String tenantId){
 		Quota quota=new Quota();
-		quota.setTenantId(tenantId);
 		return quota;
 	}
 
