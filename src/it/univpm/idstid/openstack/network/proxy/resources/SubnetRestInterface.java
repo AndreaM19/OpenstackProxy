@@ -1,7 +1,7 @@
 package it.univpm.idstid.openstack.network.proxy.resources;
 
 import java.io.IOException;
-
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -24,6 +24,8 @@ import org.json.JSONObject;
 
 @Path("/subnet")
 public class SubnetRestInterface {
+	
+	private String URLpath=OpenstackNetProxyConstants.URL_RASPI+"/subnet/v2.0/subnets/";
 
 	//This method is called if HTML is request
 	@GET
@@ -45,7 +47,7 @@ public class SubnetRestInterface {
 	@Path("/v2.0/subnets/{subnetId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Subnet showNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException{
-		JSONObject json=HTTPConnector.getJsonResponse(new URL(""+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
 
 		//Active parsing of the json file and receive a Subnet object
 		Subnet sub=JsonUtility.SubnetJsonParser(json);
@@ -65,8 +67,12 @@ public class SubnetRestInterface {
 	//Delete Subnet
 	@DELETE
 	@Path("/v2.0/subnets/{subnetId}")
-	public void deleteNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
-		HTTPConnector.HTTPConnect(new URL(""+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
-		System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_RESOURCE+subnetId);
+	public Response deleteNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		if(conn.getResponseCode()==204){
+			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId);
+			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();
+		}
+		else return Response.status(conn.getResponseCode()).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 }

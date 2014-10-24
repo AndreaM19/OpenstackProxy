@@ -1,6 +1,7 @@
 package it.univpm.idstid.openstack.network.proxy.resources;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -24,6 +25,8 @@ import org.json.JSONObject;
 
 @Path("/network")
 public class NetworkRestInterface {
+
+	private String URLpath=OpenstackNetProxyConstants.URL_RASPI+"/network/v2.0/networks/";
 
 	//This method is called if HTML is request
 	@GET
@@ -55,17 +58,18 @@ public class NetworkRestInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Network showNetwork(@PathParam("networkId") String networkId) throws MalformedURLException{
 
-		JSONObject json=HTTPConnector.getJsonResponse(new URL("http://localhost:8080/OpenstackProxy/proxy/test/resource/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
-		
-		System.out.println("http://localhost:8080/OpenstackProxy/proxy/test/resource/"+networkId);
-		
+		//		JSONObject json=HTTPConnector.getJsonResponse(new URL("http://localhost:8080/OpenstackProxy/proxy/test/resource/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+
 		//Active parsing of the json file and receive a Network object
-		//		Network net=JsonUtility.NetJsonParser(json);
-		Network net=null;
-		Test t=JsonUtility.TestJsonParser(json);
-		System.out.println(t.getTest().getTestID());
-		System.out.println(t.getTest().getTestName());
-		System.out.println(t.getTest().getTestFlag());
+		Network net=JsonUtility.NetJsonParser(json);
+
+
+		//		Network net=null;
+		//		Test t=JsonUtility.TestJsonParser(json);
+		//		System.out.println(t.getTest().getTestID());
+		//		System.out.println(t.getTest().getTestName());
+		//		System.out.println(t.getTest().getTestFlag());
 		return net;
 	}
 
@@ -82,8 +86,12 @@ public class NetworkRestInterface {
 	//Delete Network
 	@DELETE
 	@Path("/v2.0/networks/{networkId}")
-	public void deleteNetwork(@PathParam("networkId") String networkId) throws MalformedURLException, IOException{
-		HTTPConnector.HTTPConnect(new URL(""+networkId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
-		System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_RESOURCE+networkId);
+	public Response deleteNetwork(@PathParam("networkId") String networkId) throws MalformedURLException, IOException{
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		if(conn.getResponseCode()==204){
+			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId);
+			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId).build();
+		}
+		else return Response.status(conn.getResponseCode()).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 }

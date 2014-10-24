@@ -16,10 +16,12 @@ public class HTTPConnector {
 	public static HttpURLConnection HTTPConnect(URL urlToConnect, String method, String responseType) throws IOException{
 		HttpURLConnection conn = (HttpURLConnection) urlToConnect.openConnection();
 		conn.setRequestMethod(method);
-		if(responseType!=null)conn.setRequestProperty("Accept", responseType);	
-		if (conn.getResponseCode() != 200) {
-			throw new RuntimeException(OpenstackNetProxyConstants.MESSAGE_FAIL_HTTP_CONNECTION + conn.getResponseCode());
-		}
+		if(responseType!=null)conn.setRequestProperty("Accept", responseType);
+		
+		//Response code control
+		if (conn.getResponseCode()>=200 & conn.getResponseCode()<=206);
+		else throw new RuntimeException(OpenstackNetProxyConstants.MESSAGE_FAIL_HTTP_CONNECTION + conn.getResponseCode());
+		
 		return conn;
 	}
 

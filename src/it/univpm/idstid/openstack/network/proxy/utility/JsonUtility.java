@@ -4,6 +4,8 @@ import it.univpm.idstid.openstack.network.proxy.entity.Network;
 import it.univpm.idstid.openstack.network.proxy.entity.NetworkData;
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
 import it.univpm.idstid.openstack.network.proxy.entity.PortData;
+import it.univpm.idstid.openstack.network.proxy.entity.Quota;
+import it.univpm.idstid.openstack.network.proxy.entity.QuotaData;
 import it.univpm.idstid.openstack.network.proxy.entity.Subnet;
 import it.univpm.idstid.openstack.network.proxy.entity.SubnetData;
 import it.univpm.idstid.openstack.network.proxy.entity.Test;
@@ -86,6 +88,20 @@ public class JsonUtility {
 		port.getPort().setStatus(j.getString("status"));
 		port.getPort().setTenantUuID(j.getString("tenantUuID"));
 		return port;
+	}
+
+	//Parser for Quota entity
+	public static Quota QuotaJsonParser(JSONObject json){
+		Quota quota=new Quota(new QuotaData());
+		JSONObject j=new JSONObject(json.get("port").toString());
+		//Parsing the received Json file		
+		quota.getQuota().setFloatingIp(j.getInt("floatingIp"));
+		quota.getQuota().setNetwork(j.getInt("network"));
+		quota.getQuota().setPort(j.getInt("port"));
+		quota.getQuota().setRouter(j.getInt("router"));
+		quota.getQuota().setSubnet(j.getInt("subnet"));
+		quota.getQuota().setTenantId(j.getString("tenantId"));
+		return quota;
 	}
 
 	//Parser for Test entity

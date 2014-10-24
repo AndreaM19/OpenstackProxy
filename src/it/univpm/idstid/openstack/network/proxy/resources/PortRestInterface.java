@@ -1,6 +1,7 @@
 package it.univpm.idstid.openstack.network.proxy.resources;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -23,6 +24,8 @@ import org.json.JSONObject;
 
 @Path("/port")
 public class PortRestInterface {
+	
+	private String URLpath=OpenstackNetProxyConstants.URL_RASPI+"/port/v2.0/ports/";
 
 	//This method is called if HTML is request
 	@GET
@@ -44,7 +47,7 @@ public class PortRestInterface {
 	@Path("/v2.0/ports/{portId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Port showPort(@PathParam("portId") String portId) throws MalformedURLException{	
-		JSONObject json=HTTPConnector.getJsonResponse(new URL(""+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
 
 		//Active parsing of the json file and receive a Port object
 		Port port=JsonUtility.PortJsonParser(json);
@@ -64,8 +67,12 @@ public class PortRestInterface {
 	//Delete Port
 	@DELETE
 	@Path("/v2.0/ports/{portId}")
-	public void deleteNetwork(@PathParam("portId") String portId) throws MalformedURLException, IOException{
-		HTTPConnector.HTTPConnect(new URL(""+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
-		System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_RESOURCE+portId);
+	public Response deleteNetwork(@PathParam("portId") String portId) throws MalformedURLException, IOException{
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		if(conn.getResponseCode()==204){
+			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId);
+			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId).build();
+		}
+		else return Response.status(conn.getResponseCode()).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 }
