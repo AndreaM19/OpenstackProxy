@@ -24,8 +24,8 @@ import org.json.JSONObject;
 
 @Path("/subnet")
 public class SubnetRestInterface {
-	
-	private String URLpath=OpenstackNetProxyConstants.URL_RASPI+"/subnet/v2.0/subnets/";
+
+	private String URLpath=OpenstackNetProxyConstants.URL_OPENSTACK+"/subnet/v2.0/subnets/";
 
 	//This method is called if HTML is request
 	@GET
@@ -47,7 +47,7 @@ public class SubnetRestInterface {
 	@Path("/v2.0/subnets/{subnetId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Subnet showNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException{
-		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET,MediaType.APPLICATION_JSON ,OpenstackNetProxyConstants.HTTP_KEY_ACCEPT);
 
 		//Active parsing of the json file and receive a Subnet object
 		Subnet sub=JsonUtility.SubnetJsonParser(json);
@@ -56,19 +56,22 @@ public class SubnetRestInterface {
 
 	//Create Subnet
 	@POST
-	@Path("/v2.0/subnet")
+	@Path("/v2.0/subnets")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createSubnet(final Subnet sub){
-		String result = "Product created : " + sub.getSubnet().getSubnetName();
-		System.out.println(result);//print resource name in the server console
-		return Response.status(201).entity(result).build();
+	public Response createSubnet(final Subnet sub) throws MalformedURLException, IOException{
+		//Convert input object NetworkData into a String like a Json text
+		String input = JsonUtility.toJsonString(sub);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_POST, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, input);
+		String response=HTTPConnector.printStream(conn);
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(201).entity(response).build();
 	}
 
 	//Delete Subnet
 	@DELETE
 	@Path("/v2.0/subnets/{subnetId}")
 	public Response deleteNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null, null, null);
 		if(conn.getResponseCode()==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId);
 			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();

@@ -85,5 +85,5 @@ public class NetworkData {
 	public String getSubnets() {
 		return subnets;
 	}
-
+	
 }

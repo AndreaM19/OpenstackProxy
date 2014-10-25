@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Port {
 
-	private PortData port=new PortData();
-	private ArrayList<PortData> ports=new ArrayList<PortData>();
+	private PortData port;
+	private ArrayList<PortData> ports;
 	
 	//Empty constructor
 	public Port(){
@@ -22,7 +22,6 @@ public class Port {
 		this.ports = ports;
 	}
 
-	
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------

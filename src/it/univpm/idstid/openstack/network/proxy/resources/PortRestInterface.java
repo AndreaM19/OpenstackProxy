@@ -24,8 +24,8 @@ import org.json.JSONObject;
 
 @Path("/port")
 public class PortRestInterface {
-	
-	private String URLpath=OpenstackNetProxyConstants.URL_RASPI+"/port/v2.0/ports/";
+
+	private String URLpath=OpenstackNetProxyConstants.URL_OPENSTACK+"/port/v2.0/ports/";
 
 	//This method is called if HTML is request
 	@GET
@@ -47,7 +47,7 @@ public class PortRestInterface {
 	@Path("/v2.0/ports/{portId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Port showPort(@PathParam("portId") String portId) throws MalformedURLException{	
-		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, OpenstackNetProxyConstants.TYPE_JSON);
+		JSONObject json=HTTPConnector.getJsonResponse(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_ACCEPT);
 
 		//Active parsing of the json file and receive a Port object
 		Port port=JsonUtility.PortJsonParser(json);
@@ -56,19 +56,22 @@ public class PortRestInterface {
 
 	//Create Port
 	@POST
-	@Path("/v2.0/port")
+	@Path("/v2.0/ports")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createPort(final Port port){
-		String result = "Product created : " + port.getPort().getPortName();
-		System.out.println(result);//print resource name in the server console
-		return Response.status(201).entity(result).build();
+	public Response createPort(final Port port) throws MalformedURLException, IOException{
+		//Convert input object NetworkData into a String like a Json text
+		String input = JsonUtility.toJsonString(port);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_POST, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, input);
+		String response=HTTPConnector.printStream(conn);
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(201).entity(response).build();
 	}
 
 	//Delete Port
 	@DELETE
 	@Path("/v2.0/ports/{portId}")
 	public Response deleteNetwork(@PathParam("portId") String portId) throws MalformedURLException, IOException{
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null, null, null);
 		if(conn.getResponseCode()==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId);
 			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId).build();

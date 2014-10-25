@@ -2,8 +2,10 @@ package it.univpm.idstid.openstack.network.proxy.var;
 
 public class OpenstackNetProxyConstants {
 	
-	//Testing URL
+	//URL
 	public static final String URL_RASPI="http://192.168.1.66:8080/OpenstackTester/tester";
+	public static final String URL_LOCALHOST="http://localhost:8080/OpenstackTester/tester";
+	public static final String URL_OPENSTACK=URL_RASPI;
 		
 	//Application messages
 	public static final String MESSAGE_TEST="OK";
@@ -21,8 +23,12 @@ public class OpenstackNetProxyConstants {
 	public static final String HTTP_METHOD_PUT="PUT";
 	public static final String HTTP_METHOD_DELETE="DELETE";
 	
+	//HTTP keys
+	public static final String HTTP_KEY_ACCEPT="Accept";
+	public static final String HTTP_KEY_CONTENT_TYPE="Content-Type";
+	
 	//Response/request types
-	public static final String TYPE_JSON="application/json";
+//	public static final String TYPE_JSON="application/json";
 	
 	//HTML elements
 	public static final String HTML_RESOURCE_MESSAGE_NETWORK="<html> " + "<title>" + "Network" + "</title>"+ "<body><h1>" + "Network section" + "</h1></body>" + "</html> ";

@@ -2,11 +2,10 @@ package it.univpm.idstid.openstack.network.proxy.entity;
 
 import java.util.ArrayList;
 
-
 public class Subnet {
 
-	private SubnetData subnet=new SubnetData();
-	private ArrayList<SubnetData> subnets=new ArrayList<SubnetData>();
+	private SubnetData subnet;
+	private ArrayList<SubnetData> subnets;
 	
 	//Empty constructor
 	public Subnet(){
@@ -22,7 +21,6 @@ public class Subnet {
 	public Subnet(ArrayList<SubnetData> subnets) {
 		this.subnets = subnets;
 	}
-
 		
 	//---------------------------------------------------------------
 	//Getter and Setter

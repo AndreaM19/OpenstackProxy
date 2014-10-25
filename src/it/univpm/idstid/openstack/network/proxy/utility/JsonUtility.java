@@ -16,6 +16,8 @@ import java.io.Reader;
 
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+
 public class JsonUtility {
 
 	//Read all content of the json received file
@@ -112,6 +114,18 @@ public class JsonUtility {
 		t.getTest().setTestName(j.getString("testName"));
 		t.getTest().setTestFlag(j.getBoolean("testFlag"));
 		return t;
+	}
+	
+	//-----------------------------------------------------------------------------------
+	// Converters
+	//-----------------------------------------------------------------------------------
+	
+	public static String toJsonString(Object toConvert){
+		Gson gson = new Gson();
+		// convert java object to JSON format,
+		// and returned as JSON formatted string
+		String json = gson.toJson(toConvert);
+		return json;
 	}
 
 }

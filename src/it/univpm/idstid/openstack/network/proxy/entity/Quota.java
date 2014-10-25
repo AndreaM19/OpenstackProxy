@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Quota {
 	
-	private QuotaData quota=new QuotaData();
-	private ArrayList<QuotaData> quotas=new ArrayList<QuotaData>();
+	private QuotaData quota;
+	private ArrayList<QuotaData> quotas;
 	
 	//Empty constructor
 	public Quota(){
@@ -21,7 +21,6 @@ public class Quota {
 	public Quota(ArrayList<QuotaData> quotas) {
 		this.quotas = quotas;
 	}
-
 			
 	//---------------------------------------------------------------
 	//Getter and Setter

@@ -2,7 +2,6 @@ package it.univpm.idstid.openstack.network.proxy.entity;
 
 import java.util.ArrayList;
 
-
 public class Network {
 	
 	private NetworkData network;
