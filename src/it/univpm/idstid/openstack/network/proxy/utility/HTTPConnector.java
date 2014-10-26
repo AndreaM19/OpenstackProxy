@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -66,6 +67,24 @@ public class HTTPConnector {
 		}
 		return json;
 	}
+	
+	//Read into the buffer and produce a json file
+		public static Object getJsonContent(URL url, String method, String responseType, String httpKey, Type classToConvert){
+			HttpURLConnection conn=null;
+			Object obj=null;
+			try {
+				conn = HTTPConnector.HTTPConnect(url,method,responseType, httpKey, null);
+				BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+				//set the json file content
+				obj=JsonUtility.fromJsonToObject(br, classToConvert);
+				br.close();
+				HTTPConnector.HTTPDisconnect(conn);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return obj;
+		}
 	
 	//Print stream output:
 	public static String printStream(HttpURLConnection conn){

@@ -47,8 +47,9 @@ public class NetworkRestInterface {
 	@GET
 	@Path("/v2.0/networks")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Network listNetwork(){
-		Network net= new Network();
+	public Network listNetwork() throws MalformedURLException{
+		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, Network.class);
+		Network net=(Network)ob;
 		return net;
 	}
 

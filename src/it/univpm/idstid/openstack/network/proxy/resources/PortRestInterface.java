@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
+import it.univpm.idstid.openstack.network.proxy.entity.PortData;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -42,6 +43,16 @@ public class PortRestInterface {
 		return OpenstackNetProxyConstants.MESSAGE_TEST;
 	}
 
+	//List Ports
+	@GET
+	@Path("/v2.0/ports")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Port listPort() throws MalformedURLException{
+		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, Port.class);
+		Port port=(Port)ob;
+		return port;
+	}
+
 	//Show Ports
 	@GET
 	@Path("/v2.0/ports/{portId}")
@@ -58,7 +69,7 @@ public class PortRestInterface {
 	@POST
 	@Path("/v2.0/ports")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createPort(final Port port) throws MalformedURLException, IOException{
+	public Response createPort(final PortData port) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(port);
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_POST, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, input);

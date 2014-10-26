@@ -11,8 +11,10 @@ import it.univpm.idstid.openstack.network.proxy.entity.SubnetData;
 import it.univpm.idstid.openstack.network.proxy.entity.Test;
 import it.univpm.idstid.openstack.network.proxy.entity.TestData;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.lang.reflect.Type;
 
 import org.json.JSONObject;
 
@@ -126,6 +128,13 @@ public class JsonUtility {
 		// and returned as JSON formatted string
 		String json = gson.toJson(toConvert);
 		return json;
+	}
+	
+	public static Object fromJsonToObject(BufferedReader br, Type classToconvert){
+		Gson gson = new Gson();
+		//convert the json string into an object
+		Object objectConverted=gson.fromJson(br, classToconvert);
+		return objectConverted;
 	}
 
 }

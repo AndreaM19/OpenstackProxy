@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Subnet;
+import it.univpm.idstid.openstack.network.proxy.entity.SubnetData;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -42,6 +43,16 @@ public class SubnetRestInterface {
 		return OpenstackNetProxyConstants.MESSAGE_TEST;
 	}
 
+	//List Subnets
+	@GET
+	@Path("/v2.0/subnets")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Subnet listSubnet() throws MalformedURLException{
+		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, Subnet.class);
+		Subnet sub=(Subnet)ob;
+		return sub;
+	}
+
 	//Show Subnets
 	@GET
 	@Path("/v2.0/subnets/{subnetId}")
@@ -58,7 +69,7 @@ public class SubnetRestInterface {
 	@POST
 	@Path("/v2.0/subnets")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createSubnet(final Subnet sub) throws MalformedURLException, IOException{
+	public Response createSubnet(final SubnetData sub) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(sub);
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_POST, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, input);

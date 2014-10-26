@@ -43,8 +43,9 @@ public class QuotaRestInterface {
 	@GET
 	@Path("/v2.0/quotas")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Quota listQuota(){
-		Quota quota=new Quota();
+	public Quota listQuota() throws MalformedURLException{
+		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, Quota.class);
+		Quota quota=(Quota)ob;
 		return quota;
 	}
 
