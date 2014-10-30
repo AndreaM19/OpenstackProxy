@@ -23,7 +23,7 @@ public class Network {
 	}
 
 	//---------------------------------------------------------------
-	//Getter and Setter
+	// Getter and Setter
 	//---------------------------------------------------------------
 
 	public NetworkData getNetwork() {

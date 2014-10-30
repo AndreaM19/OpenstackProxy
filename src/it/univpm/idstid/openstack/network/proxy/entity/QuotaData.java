@@ -2,7 +2,7 @@ package it.univpm.idstid.openstack.network.proxy.entity;
 
 public class QuotaData {
 	
-	private String tenantId;
+	private String tenantId="-";
 	private int subnet=0;
 	private int router=0;
 	private int network=0;

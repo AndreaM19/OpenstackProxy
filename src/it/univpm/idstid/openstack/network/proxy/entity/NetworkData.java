@@ -11,9 +11,29 @@ public class NetworkData {
 	private String status="-";
 	private String subnets="-";
 	
+	public NetworkData(){
+		
+	}
+	
+	public NetworkData(String networkID, String networkName, boolean shared,
+			String tenantUuID, String ipAdd, String allocationPools,
+			boolean adminStateUp, String status, String subnets) {
+		this.networkID = networkID;
+		this.networkName = networkName;
+		this.shared = shared;
+		this.tenantUuID = tenantUuID;
+		this.ipAdd = ipAdd;
+		this.allocationPools = allocationPools;
+		this.adminStateUp = adminStateUp;
+		this.status = status;
+		this.subnets = subnets;
+	}
+	
 	//---------------------------------------------------------------
-	//Getter and Setter
+	// Getter and Setter
 	//---------------------------------------------------------------
+	
+	
 	public void setNetworkID(String networkID) {
 		this.networkID = networkID;
 	}
