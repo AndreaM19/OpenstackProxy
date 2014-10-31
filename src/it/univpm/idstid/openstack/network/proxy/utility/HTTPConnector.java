@@ -27,9 +27,12 @@ public class HTTPConnector {
 			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, MediaType.APPLICATION_JSON);
 			sendJsonContent(jsonText, conn);
 			break;
-		case OpenstackNetProxyConstants.HTTP_METHOD_PUT:  
-			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, MediaType.APPLICATION_JSON);
+		case OpenstackNetProxyConstants.HTTP_METHOD_PUT: 
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
 			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, MediaType.APPLICATION_JSON);
+//			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, MediaType.APPLICATION_JSON);
+			sendJsonContent(jsonText, conn);
 			break;
 		case OpenstackNetProxyConstants.HTTP_METHOD_DELETE:
 		break;

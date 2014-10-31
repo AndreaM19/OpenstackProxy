@@ -47,16 +47,18 @@ public class NetworkRestInterface {
 	@Path("/v2.0/networks")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Network listNetwork() throws MalformedURLException{
+		//Send HTTP request and receive a list of Json content
 		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, Network.class);
 		Network net=(Network)ob;
 		return net;
 	}
 
-	//Show Networks
+	//Show Network
 	@GET
 	@Path("/v2.0/networks/{networkId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Network showNetwork(@PathParam("networkId") String networkId) throws MalformedURLException{
+		//Send HTTP request and receive a single Json content identified by an ID
 		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, Network.class);
 		Network net=(Network)ob;
 		return net;
@@ -69,9 +71,12 @@ public class NetworkRestInterface {
 	public Response createNetwork(final NetworkData net) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(net);
+		//Connect to a REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_POST, input);
+		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		HTTPConnector.HTTPDisconnect(conn);
+		//Build the response
 		return Response.status(201).entity(response).build();
 	}
 
@@ -79,6 +84,7 @@ public class NetworkRestInterface {
 	@DELETE
 	@Path("/v2.0/networks/{networkId}")
 	public Response deleteNetwork(@PathParam("networkId") String networkId) throws MalformedURLException, IOException{
+		//Send the HTTP request to the REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
 		if(conn.getResponseCode()==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId);
@@ -91,8 +97,15 @@ public class NetworkRestInterface {
 	@PUT
 	@Path("/v2.0/networks/{networkId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateNetwork(@PathParam("networkId") String networkId, final NetworkData net){
-		System.out.println(networkId);
-		return null;
+	public Response updateNetwork(@PathParam("networkId") String networkId, final NetworkData net) throws MalformedURLException, IOException{
+		//Convert input object NetworkData into a String like a Json text
+		String input = JsonUtility.toJsonString(net);
+		//Connect to a REST service
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
+		//Get the response text from the REST service
+		String response=HTTPConnector.printStream(conn);
+		HTTPConnector.HTTPDisconnect(conn);
+		//Build the response
+		return Response.status(200).entity(response).build();
 	}
 }
