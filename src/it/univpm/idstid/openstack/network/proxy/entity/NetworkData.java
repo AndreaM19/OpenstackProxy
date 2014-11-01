@@ -1,15 +1,17 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.Subnets;
+
 public class NetworkData {
-	private String networkID="-";
-	private String networkName="-";
-	private boolean shared=false;
-	private String tenantUuID="-";
-	private String ipAdd="-";
-	private String allocationPools="-";
-	private boolean adminStateUp=false;
-	private String status="-";
-	private String subnets="-";
+	private String networkID;
+	private String networkName;
+	private boolean shared;
+	private String tenantUuID;
+	private String ipAdd;
+	private String allocationPools;
+	private boolean adminStateUp;
+	private String status;
+	private Subnets subnets;
 	
 	public NetworkData(){
 		
@@ -17,7 +19,7 @@ public class NetworkData {
 	
 	public NetworkData(String networkID, String networkName, boolean shared,
 			String tenantUuID, String ipAdd, String allocationPools,
-			boolean adminStateUp, String status, String subnets) {
+			boolean adminStateUp, String status, Subnets subnets) {
 		this.networkID = networkID;
 		this.networkName = networkName;
 		this.shared = shared;
@@ -66,7 +68,7 @@ public class NetworkData {
 		this.status = status;
 	}
 
-	public void setSubnets(String subnets) {
+	public void setSubnets(Subnets subnets) {
 		this.subnets = subnets;
 	}
 
@@ -102,7 +104,7 @@ public class NetworkData {
 		return status;
 	}
 
-	public String getSubnets() {
+	public Subnets getSubnets() {
 		return subnets;
 	}
 	

@@ -1,19 +1,22 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.FixedIps;
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.SecourityGroups;
+
 public class PortData {
 	
-	private String portID="-";
-	private String portName="-";
-	private String ipAdd="-";
-	private String macAddress="-";
-	private String networkID="-";
-	private boolean adminStateUp=false;
-	private String status="-";
-	private String fixedIPs="-";
-	private String deviceID="-";
-	private String deviceOwner="-";
-	private String tenantUuID="-";
-	private String securityGroups="-";
+	private String portID;
+	private String portName;
+	private String ipAdd;
+	private String macAddress;
+	private String networkID;
+	private boolean adminStateUp;
+	private String status;
+	private FixedIps fixedIPs;
+	private String deviceID;
+	private String deviceOwner;
+	private String tenantUuID;
+	private SecourityGroups securityGroups;
 
 	public PortData(){
 
@@ -21,8 +24,8 @@ public class PortData {
 
 	public PortData(String portID, String portName, String ipAdd,
 			String macAddress, String networkID, boolean adminStateUp,
-			String status, String fixedIPs, String deviceID,
-			String deviceOwner, String tenantUuID, String securityGroups) {
+			String status, FixedIps fixedIPs, String deviceID,
+			String deviceOwner, String tenantUuID, SecourityGroups securityGroups) {
 		this.portID = portID;
 		this.portName = portName;
 		this.ipAdd = ipAdd;
@@ -83,10 +86,10 @@ public class PortData {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public String getFixedIPs() {
+	public FixedIps getFixedIPs() {
 		return fixedIPs;
 	}
-	public void setFixedIPs(String fixedIPs) {
+	public void setFixedIPs(FixedIps fixedIPs) {
 		this.fixedIPs = fixedIPs;
 	}
 	public String getDeviceID() {
@@ -107,10 +110,10 @@ public class PortData {
 	public void setTenantUuID(String tenantUuID) {
 		this.tenantUuID = tenantUuID;
 	}
-	public String getSecurityGroups() {
+	public SecourityGroups getSecurityGroups() {
 		return securityGroups;
 	}
-	public void setSecurityGroups(String securityGroups) {
+	public void setSecurityGroups(SecourityGroups securityGroups) {
 		this.securityGroups = securityGroups;
 	}
 

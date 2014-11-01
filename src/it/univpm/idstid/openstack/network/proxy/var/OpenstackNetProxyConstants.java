@@ -5,7 +5,7 @@ public class OpenstackNetProxyConstants {
 	//URL
 	public static final String URL_RASPI="http://192.168.1.66:8080/OpenstackTester/tester";
 	public static final String URL_LOCALHOST="http://localhost:8080/OpenstackTester/tester";
-	public static final String URL_OPENSTACK=URL_RASPI;
+	public static final String URL_OPENSTACK=URL_LOCALHOST;
 		
 	//Application messages
 	public static final String MESSAGE_TEST="OK";

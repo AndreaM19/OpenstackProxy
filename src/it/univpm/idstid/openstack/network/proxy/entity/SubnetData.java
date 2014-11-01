@@ -1,28 +1,32 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.AllocationPools;
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.DnsNameServers;
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.HostRoutes;
+
 public class SubnetData {
 	
-	private String subnetID="-";
-	private String subnetName="-";
-	private String cidr="-";
-	private String allocationPools="-";
-	private String ipAdd="-";
-	private String networkID="-";
-	private String ipVersion="-";
-	private String gatewayIP="-";
-	private String dnsNameServers="-";
-	private String hostRoutes="-";
-	private boolean enableDHCP=false;
-	private String tenantUuID="-";
+	private String subnetID;
+	private String subnetName;
+	private String cidr;
+	private AllocationPools allocationPools;
+	private String ipAdd;
+	private String networkID;
+	private String ipVersion;
+	private String gatewayIP;
+	private DnsNameServers dnsNameServers;
+	private HostRoutes hostRoutes;
+	private boolean enableDHCP;
+	private String tenantUuID;
 	
 	public SubnetData(){
 		
 	}
 	
 	public SubnetData(String subnetID, String subnetName, String cidr,
-			String allocationPools, String ipAdd, String networkID,
-			String ipVersion, String gatewayIP, String dnsNameServers,
-			String hostRoutes, boolean enableDHCP, String tenantUuID) {
+			AllocationPools allocationPools, String ipAdd, String networkID,
+			String ipVersion, String gatewayIP, DnsNameServers dnsNameServers,
+			HostRoutes hostRoutes, boolean enableDHCP, String tenantUuID) {
 		this.subnetID = subnetID;
 		this.subnetName = subnetName;
 		this.cidr = cidr;
@@ -59,10 +63,10 @@ public class SubnetData {
 	public void setCidr(String cidr) {
 		this.cidr = cidr;
 	}
-	public String getAllocationPools() {
+	public AllocationPools getAllocationPools() {
 		return allocationPools;
 	}
-	public void setAllocationPools(String allocationPools) {
+	public void setAllocationPools(AllocationPools allocationPools) {
 		this.allocationPools = allocationPools;
 	}
 	public String getIpAdd() {
@@ -89,16 +93,16 @@ public class SubnetData {
 	public void setGatewayIP(String gatewayIP) {
 		this.gatewayIP = gatewayIP;
 	}
-	public String getDnsNameServers() {
+	public DnsNameServers getDnsNameServers() {
 		return dnsNameServers;
 	}
-	public void setDnsNameServers(String dnsNameServers) {
+	public void setDnsNameServers(DnsNameServers dnsNameServers) {
 		this.dnsNameServers = dnsNameServers;
 	}
-	public String getHostRoutes() {
+	public HostRoutes getHostRoutes() {
 		return hostRoutes;
 	}
-	public void setHostRoutes(String hostRoutes) {
+	public void setHostRoutes(HostRoutes hostRoutes) {
 		this.hostRoutes = hostRoutes;
 	}
 	public boolean isEnableDHCP() {
