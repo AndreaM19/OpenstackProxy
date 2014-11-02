@@ -5,117 +5,133 @@ import it.univpm.idstid.openstack.network.proxy.entity.other.objects.DnsNameServ
 import it.univpm.idstid.openstack.network.proxy.entity.other.objects.HostRoutes;
 
 public class SubnetData {
-	
-	private String subnetID;
-	private String subnetName;
+
+	private String id;
+	private String name;
 	private String cidr;
-	private AllocationPools allocationPools;
-	private String ipAdd;
-	private String networkID;
-	private String ipVersion;
-	private String gatewayIP;
-	private DnsNameServers dnsNameServers;
-	private HostRoutes hostRoutes;
-	private boolean enableDHCP;
-	private String tenantUuID;
-	
+	private AllocationPools allocation_pools;
+	private String network_id;
+	private String ip_version;
+	private String gateway_ip;
+	private DnsNameServers dns_name_servers;
+	private HostRoutes host_routes;
+	private boolean enable_dhcp;
+	private String tenant_id;
+
 	public SubnetData(){
-		
-	}
-	
-	public SubnetData(String subnetID, String subnetName, String cidr,
-			AllocationPools allocationPools, String ipAdd, String networkID,
-			String ipVersion, String gatewayIP, DnsNameServers dnsNameServers,
-			HostRoutes hostRoutes, boolean enableDHCP, String tenantUuID) {
-		this.subnetID = subnetID;
-		this.subnetName = subnetName;
-		this.cidr = cidr;
-		this.allocationPools = allocationPools;
-		this.ipAdd = ipAdd;
-		this.networkID = networkID;
-		this.ipVersion = ipVersion;
-		this.gatewayIP = gatewayIP;
-		this.dnsNameServers = dnsNameServers;
-		this.hostRoutes = hostRoutes;
-		this.enableDHCP = enableDHCP;
-		this.tenantUuID = tenantUuID;
+
 	}
 
+	public SubnetData(String id, String name, String cidr,
+			AllocationPools allocation_pools, String network_id,
+			String ip_version, String gateway_ip,
+			DnsNameServers dns_name_servers, HostRoutes host_routes,
+			boolean enable_dhcp, String tenant_id) {
+		this.id = id;
+		this.name = name;
+		this.cidr = cidr;
+		this.allocation_pools = allocation_pools;
+		this.network_id = network_id;
+		this.ip_version = ip_version;
+		this.gateway_ip = gateway_ip;
+		this.dns_name_servers = dns_name_servers;
+		this.host_routes = host_routes;
+		this.enable_dhcp = enable_dhcp;
+		this.tenant_id = tenant_id;
+	}
 
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
-	public String getSubnetID() {
-		return subnetID;
+
+	public String getId() {
+		return id;
 	}
-	public void setSubnetID(String subnetID) {
-		this.subnetID = subnetID;
+
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getSubnetName() {
-		return subnetName;
+
+	public String getName() {
+		return name;
 	}
-	public void setSubnetName(String subnetName) {
-		this.subnetName = subnetName;
+
+	public void setName(String name) {
+		this.name = name;
 	}
+
 	public String getCidr() {
 		return cidr;
 	}
+
 	public void setCidr(String cidr) {
 		this.cidr = cidr;
 	}
-	public AllocationPools getAllocationPools() {
-		return allocationPools;
+
+	public AllocationPools getAllocation_pools() {
+		return allocation_pools;
 	}
-	public void setAllocationPools(AllocationPools allocationPools) {
-		this.allocationPools = allocationPools;
+
+	public void setAllocation_pools(AllocationPools allocation_pools) {
+		this.allocation_pools = allocation_pools;
 	}
-	public String getIpAdd() {
-		return ipAdd;
+
+	public String getNetwork_id() {
+		return network_id;
 	}
-	public void setIpAdd(String ipAdd) {
-		this.ipAdd = ipAdd;
+
+	public void setNetwork_id(String network_id) {
+		this.network_id = network_id;
 	}
-	public String getNetworkID() {
-		return networkID;
+
+	public String getIp_version() {
+		return ip_version;
 	}
-	public void setNetworkID(String networkID) {
-		this.networkID = networkID;
+
+	public void setIp_version(String ip_version) {
+		this.ip_version = ip_version;
 	}
-	public String getIpVersion() {
-		return ipVersion;
+
+	public String getGateway_ip() {
+		return gateway_ip;
 	}
-	public void setIpVersion(String ipVersion) {
-		this.ipVersion = ipVersion;
+
+	public void setGateway_ip(String gateway_ip) {
+		this.gateway_ip = gateway_ip;
 	}
-	public String getGatewayIP() {
-		return gatewayIP;
+
+	public DnsNameServers getDns_name_servers() {
+		return dns_name_servers;
 	}
-	public void setGatewayIP(String gatewayIP) {
-		this.gatewayIP = gatewayIP;
+
+	public void setDns_name_servers(DnsNameServers dns_name_servers) {
+		this.dns_name_servers = dns_name_servers;
 	}
-	public DnsNameServers getDnsNameServers() {
-		return dnsNameServers;
+
+	public HostRoutes getHost_routes() {
+		return host_routes;
 	}
-	public void setDnsNameServers(DnsNameServers dnsNameServers) {
-		this.dnsNameServers = dnsNameServers;
+
+	public void setHost_routes(HostRoutes host_routes) {
+		this.host_routes = host_routes;
 	}
-	public HostRoutes getHostRoutes() {
-		return hostRoutes;
+
+	public boolean isEnable_dhcp() {
+		return enable_dhcp;
 	}
-	public void setHostRoutes(HostRoutes hostRoutes) {
-		this.hostRoutes = hostRoutes;
+
+	public void setEnable_dhcp(boolean enable_dhcp) {
+		this.enable_dhcp = enable_dhcp;
 	}
-	public boolean isEnableDHCP() {
-		return enableDHCP;
+
+	public String getTenant_id() {
+		return tenant_id;
 	}
-	public void setEnableDHCP(boolean enableDHCP) {
-		this.enableDHCP = enableDHCP;
+
+	public void setTenant_id(String tenant_id) {
+		this.tenant_id = tenant_id;
 	}
-	public String getTenantUuID() {
-		return tenantUuID;
-	}
-	public void setTenantUuID(String tenantUuID) {
-		this.tenantUuID = tenantUuID;
-	}
+
+
 
 }

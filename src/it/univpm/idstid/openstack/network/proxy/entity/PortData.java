@@ -4,117 +4,130 @@ import it.univpm.idstid.openstack.network.proxy.entity.other.objects.FixedIps;
 import it.univpm.idstid.openstack.network.proxy.entity.other.objects.SecourityGroups;
 
 public class PortData {
-	
-	private String portID;
-	private String portName;
-	private String ipAdd;
-	private String macAddress;
-	private String networkID;
-	private boolean adminStateUp;
+
+	private String id;
+	private String name;
+	private String mac_address;
+	private String network_id;
+	private boolean admin_state_up;
 	private String status;
-	private FixedIps fixedIPs;
-	private String deviceID;
-	private String deviceOwner;
-	private String tenantUuID;
-	private SecourityGroups securityGroups;
+	private FixedIps fixed_ips;
+	private String device_id;
+	private String device_owner;
+	private String tenant_id;
+	private SecourityGroups security_groups;
 
 	public PortData(){
 
 	}
 
-	public PortData(String portID, String portName, String ipAdd,
-			String macAddress, String networkID, boolean adminStateUp,
-			String status, FixedIps fixedIPs, String deviceID,
-			String deviceOwner, String tenantUuID, SecourityGroups securityGroups) {
-		this.portID = portID;
-		this.portName = portName;
-		this.ipAdd = ipAdd;
-		this.macAddress = macAddress;
-		this.networkID = networkID;
-		this.adminStateUp = adminStateUp;
+	public PortData(String id, String name, String mac_address,
+			String network_id, boolean admin_state_up, String status,
+			FixedIps fixed_ips, String device_id, String device_owner,
+			String tenant_id, SecourityGroups security_groups) {
+		this.id = id;
+		this.name = name;
+		this.mac_address = mac_address;
+		this.network_id = network_id;
+		this.admin_state_up = admin_state_up;
 		this.status = status;
-		this.fixedIPs = fixedIPs;
-		this.deviceID = deviceID;
-		this.deviceOwner = deviceOwner;
-		this.tenantUuID = tenantUuID;
-		this.securityGroups = securityGroups;
+		this.fixed_ips = fixed_ips;
+		this.device_id = device_id;
+		this.device_owner = device_owner;
+		this.tenant_id = tenant_id;
+		this.security_groups = security_groups;
 	}
 
 	//---------------------------------------------------------------
 	//Getter and Setter
 	//---------------------------------------------------------------
 
-	public String getPortID() {
-		return portID;
+	public String getId() {
+		return id;
 	}
-	public void setPortID(String portID) {
-		this.portID = portID;
+
+	public void setId(String id) {
+		this.id = id;
 	}
-	public String getPortName() {
-		return portName;
+
+	public String getName() {
+		return name;
 	}
-	public void setPortName(String portName) {
-		this.portName = portName;
+
+	public void setName(String name) {
+		this.name = name;
 	}
-	public String getIpAdd() {
-		return ipAdd;
+
+	public String getMac_address() {
+		return mac_address;
 	}
-	public void setIpAdd(String ipAdd) {
-		this.ipAdd = ipAdd;
+
+	public void setMac_address(String mac_address) {
+		this.mac_address = mac_address;
 	}
-	public String getMacAddress() {
-		return macAddress;
+
+	public String getNetwork_id() {
+		return network_id;
 	}
-	public void setMacAddress(String macAddress) {
-		this.macAddress = macAddress;
+
+	public void setNetwork_id(String network_id) {
+		this.network_id = network_id;
 	}
-	public String getNetworkID() {
-		return networkID;
+
+	public boolean isAdmin_state_up() {
+		return admin_state_up;
 	}
-	public void setNetworkID(String networkID) {
-		this.networkID = networkID;
+
+	public void setAdmin_state_up(boolean admin_state_up) {
+		this.admin_state_up = admin_state_up;
 	}
-	public boolean isAdminStateUp() {
-		return adminStateUp;
-	}
-	public void setAdminStateUp(boolean adminStateUp) {
-		this.adminStateUp = adminStateUp;
-	}
+
 	public String getStatus() {
 		return status;
 	}
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	public FixedIps getFixedIPs() {
-		return fixedIPs;
+
+	public FixedIps getFixed_ips() {
+		return fixed_ips;
 	}
-	public void setFixedIPs(FixedIps fixedIPs) {
-		this.fixedIPs = fixedIPs;
+
+	public void setFixed_ips(FixedIps fixed_ips) {
+		this.fixed_ips = fixed_ips;
 	}
-	public String getDeviceID() {
-		return deviceID;
+
+	public String getDevice_id() {
+		return device_id;
 	}
-	public void setDeviceID(String deviceID) {
-		this.deviceID = deviceID;
+
+	public void setDevice_id(String device_id) {
+		this.device_id = device_id;
 	}
-	public String getDeviceOwner() {
-		return deviceOwner;
+
+	public String getDevice_owner() {
+		return device_owner;
 	}
-	public void setDeviceOwner(String deviceOwner) {
-		this.deviceOwner = deviceOwner;
+
+	public void setDevice_owner(String device_owner) {
+		this.device_owner = device_owner;
 	}
-	public String getTenantUuID() {
-		return tenantUuID;
+
+	public String getTenant_id() {
+		return tenant_id;
 	}
-	public void setTenantUuID(String tenantUuID) {
-		this.tenantUuID = tenantUuID;
+
+	public void setTenant_id(String tenant_id) {
+		this.tenant_id = tenant_id;
 	}
-	public SecourityGroups getSecurityGroups() {
-		return securityGroups;
+
+	public SecourityGroups getSecurity_groups() {
+		return security_groups;
 	}
-	public void setSecurityGroups(SecourityGroups securityGroups) {
-		this.securityGroups = securityGroups;
+
+	public void setSecurity_groups(SecourityGroups security_groups) {
+		this.security_groups = security_groups;
 	}
 
 }

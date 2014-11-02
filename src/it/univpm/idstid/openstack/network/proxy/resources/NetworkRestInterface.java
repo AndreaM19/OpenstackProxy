@@ -68,7 +68,7 @@ public class NetworkRestInterface {
 	@POST
 	@Path("/v2.0/networks")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createNetwork(final NetworkData net) throws MalformedURLException, IOException{
+	public Response createNetwork(final Network net) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(net);
 		//Connect to a REST service
