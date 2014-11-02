@@ -19,7 +19,6 @@ public class ApplicationConfig extends Application {
 		resources.add(it.univpm.idstid.openstack.network.proxy.resources.SubnetRestInterface.class);
 		resources.add(it.univpm.idstid.openstack.network.proxy.resources.PortRestInterface.class);
 		resources.add(it.univpm.idstid.openstack.network.proxy.resources.QuotaRestInterface.class);
-		resources.add(it.univpm.idstid.openstack.network.proxy.resources.TestRestInterface.class);
 		return resources;
 	}
 

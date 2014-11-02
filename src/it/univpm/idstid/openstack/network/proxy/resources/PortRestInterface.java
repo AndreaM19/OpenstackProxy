@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
-import it.univpm.idstid.openstack.network.proxy.entity.PortData;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -21,7 +20,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
 
 @Path("/port")
 public class PortRestInterface {
@@ -69,16 +67,19 @@ public class PortRestInterface {
 	@POST
 	@Path("/v2.0/ports")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response createPort(final PortData port) throws MalformedURLException, IOException{
+	public Response createPort(final Port port) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(port);
 		//Connect to a REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_POST, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
+		Object result;
+		if(response.equals("Multiple created")) result=response;
+		else result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(201).entity(response).build();
+		return Response.status(201).entity(result).build();
 	}
 
 	//Delete Port
@@ -98,15 +99,16 @@ public class PortRestInterface {
 	@PUT
 	@Path("/v2.0/ports/{portId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updatePort(@PathParam("networkId") String portId, final PortData port) throws MalformedURLException, IOException{
+	public Response updatePort(@PathParam("networkId") String portId, final Port port) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(port);
 		//Connect to a REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
+		Port p=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(200).entity(response).build();
+		return Response.status(200).entity(p).build();
 	}
 }

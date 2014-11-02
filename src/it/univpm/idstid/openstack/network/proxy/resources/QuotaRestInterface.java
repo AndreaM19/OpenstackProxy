@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.proxy.entity.Quota;
-import it.univpm.idstid.openstack.network.proxy.entity.QuotaData;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -77,16 +76,17 @@ public class QuotaRestInterface {
 	@PUT
 	@Path("/v2.0/quotas/{tenantId}")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response updateQuota(@PathParam("tenantId") String tenantId, final QuotaData quota) throws MalformedURLException, IOException{
+	public Response updateQuota(@PathParam("tenantId") String tenantId, final Quota quota) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(quota);
 		//Connect to a REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
+		Quota q=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(200).entity(response).build();
+		return Response.status(200).entity(q).build();
 	}
 
 }

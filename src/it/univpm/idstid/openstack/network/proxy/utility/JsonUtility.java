@@ -31,10 +31,17 @@ public class JsonUtility {
 		return json;
 	}
 	
-	public static Object fromJsonToObject(BufferedReader br, Type classToconvert){
+	public static Object fromJsonToObject(BufferedReader br, Type classToConvert){
 		Gson gson = new Gson();
 		//convert the json string into an object
-		Object objectConverted=gson.fromJson(br, classToconvert);
+		Object objectConverted=gson.fromJson(br, classToConvert);
+		return objectConverted;
+	}
+	
+	public static Object fromResponseStringToObject(String jsonString, Type classToConvert){
+		Gson gson = new Gson();
+		//convert the json string into an object
+		Object objectConverted=gson.fromJson(jsonString, classToConvert);
 		return objectConverted;
 	}
 
