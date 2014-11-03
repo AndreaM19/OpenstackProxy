@@ -45,22 +45,30 @@ public class SubnetRestInterface {
 	@GET
 	@Path("/v2.0/subnets")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Subnet listSubnet() throws MalformedURLException{
+	public Response listSubnet() throws MalformedURLException, IOException{
 		//Send HTTP request and receive a list of Json content
-		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, Subnet.class);
-		Subnet sub=(Subnet)ob;
-		return sub;
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		String response=HTTPConnector.printStream(conn);
+		Object result;
+		result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
+		int responseCode=conn.getResponseCode();
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Show Subnet
 	@GET
 	@Path("/v2.0/subnets/{subnetId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Subnet showNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException{
+	public Response showSubnet(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
 		//Send HTTP request and receive a single Json content identified by an ID
-		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, Subnet.class);
-		Subnet sub=(Subnet)ob;
-		return sub;
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		String response=HTTPConnector.printStream(conn);
+		Object result;
+		result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
+		int responseCode=conn.getResponseCode();
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Create Subnet
@@ -77,22 +85,24 @@ public class SubnetRestInterface {
 		Object result;
 		if(response.equals("Multiple created")) result=response;
 		else result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
+		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(201).entity(result).build();
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Delete Subnet
 	@DELETE
 	@Path("/v2.0/subnets/{subnetId}")
-	public Response deleteNetwork(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
+	public Response deleteSubnet(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
 		//Send the HTTP request to the REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
-		if(conn.getResponseCode()==204){
+		int responseCode=conn.getResponseCode();
+		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId);
-			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();
+			return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();
 		}
-		else return Response.status(conn.getResponseCode()).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
+		else return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 
 	//Update Subnet
@@ -107,8 +117,9 @@ public class SubnetRestInterface {
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Subnet s=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
+		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(200).entity(s).build();
+		return Response.status(responseCode).entity(s).build();
 	}
 }

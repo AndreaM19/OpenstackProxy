@@ -45,22 +45,30 @@ public class PortRestInterface {
 	@GET
 	@Path("/v2.0/ports")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Port listPort() throws MalformedURLException{
+	public Response listPort() throws MalformedURLException, IOException{
 		//Send HTTP request and receive a list of Json content
-		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, Port.class);
-		Port port=(Port)ob;
-		return port;
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		String response=HTTPConnector.printStream(conn);
+		Object result;
+		result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+		int responseCode=conn.getResponseCode();
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Show Port
 	@GET
 	@Path("/v2.0/ports/{portId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Port showPort(@PathParam("portId") String portId) throws MalformedURLException{	
+	public Response showPort(@PathParam("portId") String portId) throws MalformedURLException, IOException{	
 		//Send HTTP request and receive a single Json content identified by an ID
-		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, Port.class);
-		Port port=(Port)ob;
-		return port;
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		String response=HTTPConnector.printStream(conn);
+		Object result;
+		result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+		int responseCode=conn.getResponseCode();
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Create Port
@@ -77,22 +85,24 @@ public class PortRestInterface {
 		Object result;
 		if(response.equals("Multiple created")) result=response;
 		else result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(201).entity(result).build();
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Delete Port
 	@DELETE
 	@Path("/v2.0/ports/{portId}")
-	public Response deleteNetwork(@PathParam("portId") String portId) throws MalformedURLException, IOException{
+	public Response deletePort(@PathParam("portId") String portId) throws MalformedURLException, IOException{
 		//Send the HTTP request to the REST service
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
-		if(conn.getResponseCode()==204){
+		int responseCode=conn.getResponseCode();
+		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId);
-			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId).build();
+			return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId).build();
 		}
-		else return Response.status(conn.getResponseCode()).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
+		else return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 
 	//Update Port
@@ -107,8 +117,9 @@ public class PortRestInterface {
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Port p=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(200).entity(p).build();
+		return Response.status(responseCode).entity(p).build();
 	}
 }

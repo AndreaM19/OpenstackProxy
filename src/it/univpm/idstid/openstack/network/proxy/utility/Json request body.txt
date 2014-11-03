@@ -1,0 +1,47 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%																											%%
+%%		Formato corretto per la POST da Advanced REST Client (da inserire nel payload in formato RAW)		%%
+%%																											%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+CREATE NETWORK
+{"network":{"admin_state_up":true,"name":"My network"}}
+
+CREATE MULTIPLE NETWORK
+{"networks":[{"admin_state_up":true,"name":"Net1"},{"admin_state_up":true,"name":"Net2"},{"admin_state_up":true,"name":"Net3"}]}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE PORT
+{"port":{"admin_state_up":true,"device_id":"","name":"My port","network_id":"abaf2e70-4305-4e8d-ac70-3e4cc5f66a07","security_groups":["85cc3048-abc3-43cc-89b3-377341426ac5"]}}
+
+CREATE MULTIPLE PORT
+{"ports":[{"admin_state_up":true,"device_id":"","name":"My port1","network_id":"abaf2e70-4305-4e8d-ac70-3e4cc5f66a07","security_groups":["85cc3048-abc3-43cc-89b3-377341426ac5"]},{"admin_state_up":true,"device_id":"","name":"My port2","network_id":"abaf2e70-4305-4e8d-ac70-3e4cc5f66a07","security_groups":["85cc3048-abc3-43cc-89b3-377341426ac5"]},{"admin_state_up":true,"device_id":"","name":"My port3","network_id":"abaf2e70-4305-4e8d-ac70-3e4cc5f66a07","security_groups":["85cc3048-abc3-43cc-89b3-377341426ac5"]}]}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE SUBNET
+{"subnet":{"allocation_pools":[{"end":"10.0.3.254","start":"10.0.3.2"}],"cidr":"10.0.3.0/24","ip_version":"4","network_id":"9d83c053-b0a4-4682-ae80-c00df269ce0a"}}
+
+CREATE MULTIPLE SUBNET
+{"subnets":[{"allocation_pools":[{"end":"10.0.3.254","start":"10.0.3.2"}],"cidr":"10.0.3.0/24","ip_version":"4","network_id":"9d83c053-b0a4-4682-ae80-c00df269ce0a"},{"allocation_pools":[{"end":"10.0.3.254","start":"10.0.3.2"}],"cidr":"10.0.3.0/24","ip_version":"4","network_id":"9d83c053-b0a4-4682-ae80-c00df269ce0a"},{"allocation_pools":[{"end":"10.0.3.254","start":"10.0.3.2"}],"cidr":"10.0.3.0/24","ip_version":"4","network_id":"9d83c053-b0a4-4682-ae80-c00df269ce0a"}]}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Formato corretto per la PUT da Advanced REST Client (da inserire nel payload in formato RAW)
+
+UPDATE NETWORK
+{"admin_state_up":true,"name":"My network"}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+UPDATE PORT
+{"admin_state_up":true,"device_id":"","device_owner":"","fixed_ips":[{"ip_address":"10.0.0.4","subnet_id":"3b498f11-0a20-43ed-b992-0e4202d5f930"}],"id":"netId","mac_address":"fa:16:3e:ac:95:a9","name":"My port","network_id":"abaf2e70-4305-4e8d-ac70-3e4cc5f66a07","security_groups":["85cc3048-abc3-43cc-89b3-377341426ac5"],"status":"ACTIVE","tenant_id":"667b69e4d6749749ef3bcba7251d9ce"}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+UPDATE SUBNET
+{"dnsNameServers":"-","enableDHCP":false,"gatewayIP":"-","hostRoutes":"-","ipAdd":"-","networkID":"-","subnetID":"-","subnetName":"-","tenantUuID":"-"}
+{"allocation_pools":[{"end":"10.0.3.254","start":"10.0.3.2"}],"enable_dhcp":true,"gateway_ip":"10.0.3.1","host_routes":[],"id":"netId","name":"My subnet","network_id":"9d83c053-b0a4-4682-ae80-c00df269ce0a","tenant_id":"667b69e4d6749749ef3bcba7251d9ce"}
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+
+UPDATE QUOTA
+{"subnet": 40,"router": 50,"network": 10,"floatingip": 30,"port": 30}
+-------------------------------------------------------------------------------------------------------------------------------------------------------

@@ -44,20 +44,30 @@ public class QuotaRestInterface {
 	@GET
 	@Path("/v2.0/quotas")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Quota listQuota() throws MalformedURLException{
-		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, Quota.class);
-		Quota quota=(Quota)ob;
-		return quota;
+	public Response listQuota() throws MalformedURLException, IOException{
+		//Send HTTP request and receive a list of Json content
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		String response=HTTPConnector.printStream(conn);
+		Object result;
+		result=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
+		int responseCode=conn.getResponseCode();
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Show Quotas
 	@GET
 	@Path("/v2.0/quotas/{tenantId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Quota showQuota(@PathParam("tenantId") String tenantId) throws MalformedURLException{
-		Object ob=HTTPConnector.getJsonContent(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_GET, Quota.class);
-		Quota quota=(Quota)ob;	
-		return quota;
+	public Response showQuota(@PathParam("tenantId") String tenantId) throws MalformedURLException, IOException{
+		//Send HTTP request and receive a single Json content identified by an ID
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		String response=HTTPConnector.printStream(conn);
+		Object result;
+		result=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
+		int responseCode=conn.getResponseCode();
+		HTTPConnector.HTTPDisconnect(conn);
+		return Response.status(responseCode).entity(result).build();
 	}
 
 	//Reset Quotas
@@ -65,11 +75,12 @@ public class QuotaRestInterface {
 	@Path("/v2.0/quotas/{tenantId}")
 	public Response resetQuota(@PathParam("tenantId") String tenantId) throws MalformedURLException, IOException{
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
-		if(conn.getResponseCode()==204){
+		int responseCode=conn.getResponseCode();
+		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId);
-			return Response.status(204).entity(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId).build();
+			return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId).build();
 		}
-		else return Response.status(conn.getResponseCode()).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
+		else return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 
 	//Update Quota
@@ -84,9 +95,10 @@ public class QuotaRestInterface {
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Quota q=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
+		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(200).entity(q).build();
+		return Response.status(responseCode).entity(q).build();
 	}
 
 }
