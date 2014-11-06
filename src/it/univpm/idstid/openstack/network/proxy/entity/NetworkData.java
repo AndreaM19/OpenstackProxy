@@ -1,8 +1,10 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
+import java.io.Serializable;
+
 import it.univpm.idstid.openstack.network.proxy.entity.other.objects.Subnets;
 
-public class NetworkData {
+public class NetworkData implements Serializable{
 	private String id;
 	private String name;
 	private boolean shared;

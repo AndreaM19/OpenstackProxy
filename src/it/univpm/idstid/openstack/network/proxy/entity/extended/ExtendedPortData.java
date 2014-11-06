@@ -1,29 +1,47 @@
 package it.univpm.idstid.openstack.network.proxy.entity.extended;
 
+import com.google.gson.annotations.SerializedName;
+
 import it.univpm.idstid.openstack.network.proxy.entity.PortData;
 
 public class ExtendedPortData extends PortData {
-
-	private String vifType="-";
-	private String hostID="-";
+	
+	@SerializedName("binding:vif_type")
+	private String vif_type="-";
+	@SerializedName("binding:host_id")
+	private String host_id="-";
+	@SerializedName("binding:profile")
 	private String profile="-";
+	@SerializedName("binding:capabilities")
 	private String capabilities="-";
+	
+	public ExtendedPortData(){
+		
+	}
+	
+	public ExtendedPortData(String vif_type, String host_id, String profile,
+			String capabilities) {
+		this.vif_type = vif_type;
+		this.host_id = host_id;
+		this.profile = profile;
+		this.capabilities = capabilities;
+	}
 	
 	//---------------------------------------------------------------
 	// Getter and Setter
 	//---------------------------------------------------------------
 	
-	public String getVifType() {
-		return vifType;
+	public String getVif_type() {
+		return vif_type;
 	}
-	public void setVifType(String vifType) {
-		this.vifType = vifType;
+	public void setVif_type(String vif_type) {
+		this.vif_type = vif_type;
 	}
-	public String getHostID() {
-		return hostID;
+	public String getHost_id() {
+		return host_id;
 	}
-	public void setHostID(String hostID) {
-		this.hostID = hostID;
+	public void setHost_id(String host_id) {
+		this.host_id = host_id;
 	}
 	public String getProfile() {
 		return profile;
@@ -37,4 +55,6 @@ public class ExtendedPortData extends PortData {
 	public void setCapabilities(String capabilities) {
 		this.capabilities = capabilities;
 	}
-}
+	
+	
+	}

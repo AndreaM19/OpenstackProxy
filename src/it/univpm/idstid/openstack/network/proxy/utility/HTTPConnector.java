@@ -93,7 +93,7 @@ public class HTTPConnector {
 			System.out.println("Output from Server:\n");
 			while ((output = responseBuffer.readLine()) != null) {
 				response=output;
-				System.out.println("===> "+output);
+				System.out.println("PROXY ===> "+output);
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
