@@ -24,7 +24,9 @@ import javax.ws.rs.core.Response;
 @Path("/subnet")
 public class SubnetRestInterface {
 
-	private String URLpath=OpenstackNetProxyConstants.URL_OPENSTACK+"/subnet/v2.0/subnets/";
+	private String path_local=OpenstackNetProxyConstants.URL_OPENSTACK+"/subnet/v2.0/subnets";
+	private String path_external=OpenstackNetProxyConstants.URL_OPENSTACK+"/v2.0/subnets";
+	private String URLpath=path_external;	
 
 	//This method is called if HTML is request
 	@GET
@@ -62,7 +64,7 @@ public class SubnetRestInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showSubnet(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
 		//Send HTTP request and receive a single Json content identified by an ID
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
 		String response=HTTPConnector.printStream(conn);
 		Object result;
 		result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
@@ -96,7 +98,7 @@ public class SubnetRestInterface {
 	@Path("/v2.0/subnets/{subnetId}")
 	public Response deleteSubnet(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
 		//Send the HTTP request to the REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
 		int responseCode=conn.getResponseCode();
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId);
@@ -113,7 +115,7 @@ public class SubnetRestInterface {
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(sub);
 		//Connect to a REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Subnet s=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);

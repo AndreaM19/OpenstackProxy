@@ -17,6 +17,8 @@ import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
+import javax.ws.rs.OPTIONS;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -24,13 +26,16 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import com.google.gson.Gson;
 
 @Path("/network")
 public class NetworkRestInterface {
 
-	private String URLpath=OpenstackNetProxyConstants.URL_OPENSTACK+"/network/v2.0/networks/";
+	private String path_local=OpenstackNetProxyConstants.URL_OPENSTACK+"/network/v2.0/networks";
+	private String path_external=OpenstackNetProxyConstants.URL_OPENSTACK+"/v2.0/networks";
+	private String URLpath=path_external;
 
 	//This method is called if HTML is request
 	@GET
@@ -59,7 +64,7 @@ public class NetworkRestInterface {
 		result=(Network) JsonUtility.fromResponseStringToObject(response, Network.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
-		return Response.status(responseCode).entity(result).build();
+		return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
 
 	//Show Network
@@ -68,13 +73,13 @@ public class NetworkRestInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response showNetwork(@PathParam("networkId") String networkId) throws MalformedURLException, IOException{
 		//Send HTTP request and receive a single Json content identified by an ID
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
 		String response=HTTPConnector.printStream(conn);
 		Object result;
 		result=(Network) JsonUtility.fromResponseStringToObject(response, Network.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
-		return Response.status(responseCode).entity(result).build();
+		return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
 
 	//Create Networks
@@ -94,7 +99,7 @@ public class NetworkRestInterface {
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(responseCode).entity(result).build();
+		return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
 
 	//Delete Network
@@ -102,13 +107,13 @@ public class NetworkRestInterface {
 	@Path("/v2.0/networks/{networkId}")
 	public Response deleteNetwork(@PathParam("networkId") String networkId) throws MalformedURLException, IOException{
 		//Send the HTTP request to the REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
 		int responseCode=conn.getResponseCode();
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId);
-			return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId).build();
+			return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId).build();
 		}
-		else return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
+		else return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 
 	//Update Network
@@ -119,14 +124,19 @@ public class NetworkRestInterface {
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(net);
 		//Connect to a REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+networkId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+networkId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Network n=(Network) JsonUtility.fromResponseStringToObject(response, Network.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Build the response
-		return Response.status(responseCode).entity(n).build();
+		return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(n).build();
+	}
+	
+	@OPTIONS
+	public Response getOptionValues(@HeaderParam("Access-Control-Request-Headers") String request){
+		return Response.ok().header("Access-Control-Allow-Origin", "*").header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS").build();
 	}
 
 	//------------------------------------------------------------------------------

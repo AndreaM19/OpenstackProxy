@@ -17,6 +17,8 @@ public class HTTPConnector {
 	//connection to the URL
 	public static HttpURLConnection HTTPConnect(URL urlToConnect, String method, String jsonText) throws IOException{
 		HttpURLConnection conn = (HttpURLConnection) urlToConnect.openConnection();
+		//Set token for open connection to Openstack
+		conn.addRequestProperty("X-Auth-Token", OpenstackNetProxyConstants.TOKEN);
 		conn.setRequestMethod(method);
 		switch (method) {
 		case OpenstackNetProxyConstants.HTTP_METHOD_GET:  

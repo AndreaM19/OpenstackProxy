@@ -24,7 +24,9 @@ import javax.ws.rs.core.Response;
 @Path("/quota")
 public class QuotaRestInterface {
 
-	private String URLpath=OpenstackNetProxyConstants.URL_OPENSTACK+"/quota/v2.0/quotas/";
+	private String path_local=OpenstackNetProxyConstants.URL_OPENSTACK+"/quota/v2.0/quotas/";
+	private String path_external=OpenstackNetProxyConstants.URL_OPENSTACK+"/v2.0/quotas";
+	private String URLpath=path_external;	
 
 	@GET
 	@Path("/test")
