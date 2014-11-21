@@ -16,10 +16,13 @@ public class HTTPConnector {
 
 	//connection to the URL
 	public static HttpURLConnection HTTPConnect(URL urlToConnect, String method, String jsonText) throws IOException{
+
 		HttpURLConnection conn = (HttpURLConnection) urlToConnect.openConnection();
+		
 		//Set token for open connection to Openstack
 		conn.addRequestProperty("X-Auth-Token", OpenstackNetProxyConstants.TOKEN);
 		conn.setRequestMethod(method);
+
 		switch (method) {
 		case OpenstackNetProxyConstants.HTTP_METHOD_GET:  
 			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, MediaType.APPLICATION_JSON);
@@ -33,29 +36,33 @@ public class HTTPConnector {
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_CONTENT_TYPE, MediaType.APPLICATION_JSON);
-//			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, MediaType.APPLICATION_JSON);
+			conn.setRequestProperty(OpenstackNetProxyConstants.HTTP_KEY_ACCEPT, MediaType.APPLICATION_JSON);
 			sendJsonContent(jsonText, conn);
 			break;
 		case OpenstackNetProxyConstants.HTTP_METHOD_DELETE:
-		break;
+			break;
 		}
-
+		
 		//Response code control
-		if (conn.getResponseCode()>=200 & conn.getResponseCode()<=206);
-		else throw new RuntimeException(OpenstackNetProxyConstants.MESSAGE_FAIL_HTTP_CONNECTION + conn.getResponseCode());
+		if (conn.getResponseCode()>=200 & conn.getResponseCode()<=206)System.out.println("HTTP Response code: "+conn.getResponseCode());
+		else {
+			System.out.println("URL: "+conn.getURL());
+			throw new RuntimeException(OpenstackNetProxyConstants.MESSAGE_FAIL_HTTP_CONNECTION + conn.getResponseCode());
+		}
 
 		return conn;
 	}
 
-	
+
 	//Disconnect http service
 	public static void HTTPDisconnect(HttpURLConnection conn){
 		conn.disconnect();
 	}
 
-	
+
 	//Send json file to server
 	public static void sendJsonContent(String jsonText, HttpURLConnection conn){
+		System.out.println("PROXY ===> "+jsonText);
 		OutputStream outputStream;
 		try {
 			outputStream = conn.getOutputStream();
@@ -85,18 +92,19 @@ public class HTTPConnector {
 		return obj;
 	}
 
-	
+
 	//Print stream output:
 	public static String printStream(HttpURLConnection conn){
 		BufferedReader responseBuffer;
 		String output, response = null;
 		try {
 			responseBuffer = new BufferedReader(new InputStreamReader((conn.getInputStream())));
-			System.out.println("Output from Server:\n");
+			
 			while ((output = responseBuffer.readLine()) != null) {
 				response=output;
-				System.out.println("PROXY ===> "+output);
+				System.out.println("SERVER ===> "+output);
 			}
+			System.out.println(OpenstackNetProxyConstants.ROW_1);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

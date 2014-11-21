@@ -1,9 +1,8 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Network implements Serializable{
+public class Network{
 	
 	private NetworkData network;
 	private ArrayList<NetworkData> networks;

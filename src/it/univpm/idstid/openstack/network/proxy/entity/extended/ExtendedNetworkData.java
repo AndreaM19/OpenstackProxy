@@ -6,10 +6,6 @@ import it.univpm.idstid.openstack.network.proxy.entity.NetworkData;
 
 public class ExtendedNetworkData extends NetworkData {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	@SerializedName("provider:network_type")
 	private String network_type;
 	@SerializedName("provider:physical_network")

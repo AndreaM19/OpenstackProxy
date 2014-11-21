@@ -11,7 +11,6 @@ import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -27,6 +26,7 @@ import javax.ws.rs.core.Response;
 @Path("/quota")
 public class QuotaRestInterface {
 
+	@SuppressWarnings("unused")
 	private String path_local=OpenstackNetProxyConstants.URL_OPENSTACK+"/quota/v2.0/quotas/";
 	private String path_external=OpenstackNetProxyConstants.URL_OPENSTACK+"/v2.0/quotas";
 	private String URLpath=path_external;	
@@ -48,12 +48,12 @@ public class QuotaRestInterface {
 	//List Quotas
 	@GET
 	@Path("/v2.0/quotas")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response listQuota(@HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
-		if (accept.equals(MediaType.APPLICATION_XML)){
+		if (accept.equals(OpenstackNetProxyConstants.TYPE_RDF)){
 			System.out.println(accept);
 			XmlTester t=new XmlTester();
-			return Response.ok().status(200).header("Access-Control-Allow-Origin", "*").entity(t).build();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(t).build();
 		}
 		else{
 			//Send HTTP request and receive a list of Json content
@@ -70,7 +70,7 @@ public class QuotaRestInterface {
 	//Show Quotas
 	@GET
 	@Path("/v2.0/quotas/{tenantId}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response showQuota(@PathParam("tenantId") String tenantId, @HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
 		//Send HTTP request and receive a single Json content identified by an ID
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);

@@ -5,13 +5,14 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import it.univpm.idstid.openstack.network.parliament.SubnetOntology;
 import it.univpm.idstid.openstack.network.proxy.entity.Subnet;
-import it.univpm.idstid.openstack.network.proxy.entity.XmlTester;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
 
-import javax.ws.rs.Consumes;
+
+
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -27,6 +28,7 @@ import javax.ws.rs.core.Response;
 @Path("/subnet")
 public class SubnetRestInterface {
 
+	@SuppressWarnings("unused")
 	private String path_local=OpenstackNetProxyConstants.URL_OPENSTACK+"/subnet/v2.0/subnets";
 	private String path_external=OpenstackNetProxyConstants.URL_OPENSTACK+"/v2.0/subnets";
 	private String URLpath=path_external;	
@@ -49,12 +51,14 @@ public class SubnetRestInterface {
 	//List Subnets
 	@GET
 	@Path("/v2.0/subnets")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response listSubnet(@HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
-		if (accept.equals(MediaType.APPLICATION_XML)){
+		if (accept.equals(OpenstackNetProxyConstants.TYPE_RDF)){
 			System.out.println(accept);
-			XmlTester t=new XmlTester();
-			return Response.ok().status(200).header("Access-Control-Allow-Origin", "*").entity(t).build();
+			String dataFromKB=SubnetOntology.listSubnet();
+			System.out.println(dataFromKB);
+//			XmlTester t=new XmlTester();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(dataFromKB).build();
 		}
 		else{
 			//Send HTTP request and receive a list of Json content
@@ -71,12 +75,14 @@ public class SubnetRestInterface {
 	//Show Subnet
 	@GET
 	@Path("/v2.0/subnets/{subnetId}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response showSubnet(@PathParam("subnetId") String subnetId, @HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
-		if (accept.equals(MediaType.APPLICATION_XML)){
+		if (accept.equals(OpenstackNetProxyConstants.TYPE_RDF)){
 			System.out.println(accept);
-			XmlTester t=new XmlTester();
-			return Response.ok().status(200).header("Access-Control-Allow-Origin", "*").entity(t).build();
+			String dataFromKB=SubnetOntology.showSubnet(subnetId);
+			System.out.println(dataFromKB);
+//			XmlTester t=new XmlTester();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(dataFromKB).build();
 		}
 		else{
 			//Send HTTP request and receive a single Json content identified by an ID
@@ -108,6 +114,12 @@ public class SubnetRestInterface {
 		else result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
+		//Insert data into the Knowledge Base
+//		if (responseCode==201){
+//			Subnet s=(Subnet)result;
+//			if(s.getSubnets()==null)SubnetOntology.insertSubnet(s, null);
+//			else SubnetOntology.insertMultipleSubnets(n);
+//		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
@@ -117,13 +129,14 @@ public class SubnetRestInterface {
 	@Path("/v2.0/subnets/{subnetId}")
 	public Response deleteSubnet(@PathParam("subnetId") String subnetId) throws MalformedURLException, IOException{
 		//Send the HTTP request to the REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
 		int responseCode=conn.getResponseCode();
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId);
-			return Response.status(responseCode)
-					.header("Access-Control-Allow-Origin", "*")
-					.entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();
+			//Delete resource in the Knowledge Base
+//			SubnetOntology.deleteSubnet(subnetId);
+			//Build the response
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();
 		}
 		else return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
@@ -138,12 +151,15 @@ public class SubnetRestInterface {
 		sub = JsonUtility.fromResponseStringToObject(request,Subnet.class);
 		String input = JsonUtility.toJsonString(sub);
 		//Connect to a REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+subnetId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Subnet s=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
+		if (responseCode==200){
+//			SubnetOntology.updateSubnet(s);
+		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(s).build();
 	}

@@ -1,13 +1,11 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
-import java.io.Serializable;
-
 import it.univpm.idstid.openstack.network.proxy.entity.other.objects.Subnets;
 
-public class NetworkData implements Serializable{
+public class NetworkData{
 	private String id;
 	private String name;
-	private boolean shared;
+	private String shared;
 	private String tenant_id;
 	private boolean admin_state_up;
 	private String status;
@@ -17,7 +15,7 @@ public class NetworkData implements Serializable{
 
 	}
 
-	public NetworkData(String id, String name, boolean shared,
+	public NetworkData(String id, String name, String shared,
 			String tenant_id, boolean admin_state_up, String status,
 			Subnets subnets) {
 		this.id = id;
@@ -49,11 +47,11 @@ public class NetworkData implements Serializable{
 		this.name = name;
 	}
 
-	public boolean isShared() {
+	public String isShared() {
 		return shared;
 	}
 
-	public void setShared(boolean shared) {
+	public void setShared(String shared) {
 		this.shared = shared;
 	}
 

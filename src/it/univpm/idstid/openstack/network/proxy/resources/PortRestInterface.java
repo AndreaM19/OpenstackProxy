@@ -5,13 +5,12 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import it.univpm.idstid.openstack.network.parliament.PortOntology;
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
-import it.univpm.idstid.openstack.network.proxy.entity.XmlTester;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
 
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -27,6 +26,7 @@ import javax.ws.rs.core.Response;
 @Path("/port")
 public class PortRestInterface {
 
+	@SuppressWarnings("unused")
 	private String path_local=OpenstackNetProxyConstants.URL_OPENSTACK+"/port/v2.0/ports";
 	private String path_external=OpenstackNetProxyConstants.URL_OPENSTACK+"/v2.0/ports";
 	private String URLpath=path_external;
@@ -49,12 +49,14 @@ public class PortRestInterface {
 	//List Ports
 	@GET
 	@Path("/v2.0/ports")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response listPort(@HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
-		if (accept.equals(MediaType.APPLICATION_XML)){
+		if (accept.equals(OpenstackNetProxyConstants.TYPE_RDF)){
 			System.out.println(accept);
-			XmlTester t=new XmlTester();
-			return Response.ok().status(200).header("Access-Control-Allow-Origin", "*").entity(t).build();
+			String dataFromKB=PortOntology.listPort();
+			System.out.println(dataFromKB);
+//			XmlTester t=new XmlTester();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(dataFromKB).build();
 		}
 		else{
 			//Send HTTP request and receive a list of Json content
@@ -71,12 +73,14 @@ public class PortRestInterface {
 	//Show Port
 	@GET
 	@Path("/v2.0/ports/{portId}")
-	@Produces({MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML})
+	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response showPort(@PathParam("portId") String portId, @HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
-		if (accept.equals(MediaType.APPLICATION_XML)){
+		if (accept.equals(OpenstackNetProxyConstants.TYPE_RDF)){
 			System.out.println(accept);
-			XmlTester t=new XmlTester();
-			return Response.ok().status(200).header("Access-Control-Allow-Origin", "*").entity(t).build();
+			String dataFromKB=PortOntology.showPort(portId);
+			System.out.println(dataFromKB);
+//			XmlTester t=new XmlTester();
+			return Response.status(200).header("Access-Control-Allow-Origin", "*").entity(dataFromKB).build();
 		}
 		else{
 			//Send HTTP request and receive a single Json content identified by an ID
@@ -109,6 +113,12 @@ public class PortRestInterface {
 		else result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
+		//Insert data into the Knowledge Base
+//		if (responseCode==201){
+//			Port p=(Port)result;
+//			if(p.getPorts()==null)PortOntology.insertPort(p, null);
+//			else PortOntology.insertMultiplePorts(p);
+//		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
@@ -118,13 +128,14 @@ public class PortRestInterface {
 	@Path("/v2.0/ports/{portId}")
 	public Response deletePort(@PathParam("portId") String portId) throws MalformedURLException, IOException{
 		//Send the HTTP request to the REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+portId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
 		int responseCode=conn.getResponseCode();
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId);
-			return Response.status(responseCode)
-					.header("Access-Control-Allow-Origin", "*")
-					.entity(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId).build();
+			//Delete resource in the Knowledge Base
+//			PortOntology.deletePort(portId);
+			//Build the response
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_DELETED_PORT_RESOURCE+portId).build();
 		}
 		else return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
@@ -133,18 +144,22 @@ public class PortRestInterface {
 	@PUT
 	@Path("/v2.0/ports/{portId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response updatePort(@PathParam("networkId") String portId, final String request) throws MalformedURLException, IOException{
+	public Response updatePort(@PathParam("portId") String portId, final String request) throws MalformedURLException, IOException{
 		Object port;
 		port = JsonUtility.fromResponseStringToObject(request,Port.class);
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(port);
 		//Connect to a REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+portId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
+		System.out.println(this.URLpath+"/"+portId);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+portId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Port p=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
+		if (responseCode==200){
+//			PortOntology.updatePort(p);
+		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(p).build();
 	}
