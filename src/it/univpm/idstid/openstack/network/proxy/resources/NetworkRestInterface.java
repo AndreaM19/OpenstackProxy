@@ -119,11 +119,11 @@ public class NetworkRestInterface {
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Insert data into the Knowledge Base
-		//		if (responseCode==201){
-		//			Network n=(Network)result;
-		//			if(n.getNetworks()==null)NetworkOntology.insertNetwork(n, null);
-		//			else NetworkOntology.insertMultipleNetworks(n);
-		//		}
+				if (responseCode==201){
+					Network n=(Network)result;
+					if(n.getNetworks()==null)NetworkOntology.insertNetwork(n, null);
+					else NetworkOntology.insertMultipleNetworks(n);
+				}
 		//Build the response
 		return Response.ok().status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
@@ -139,7 +139,7 @@ public class NetworkRestInterface {
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId);
 			//Delete resource in the Knowledge Base
-			//			NetworkOntology.deleteNetwork(networkId);
+						NetworkOntology.deleteNetwork(networkId);
 			//Build the response
 			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_DELETED_NETWORK_RESOURCE+networkId).build();
 		}
@@ -165,7 +165,7 @@ public class NetworkRestInterface {
 		HTTPConnector.HTTPDisconnect(conn);
 		//Update data into the Knowledge Base
 		if (responseCode==200){
-//			NetworkOntology.updateNetwork(n);
+			NetworkOntology.updateNetwork(n);
 		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(n).build();

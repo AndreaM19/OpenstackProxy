@@ -73,7 +73,7 @@ public class QuotaRestInterface {
 	@Produces({MediaType.APPLICATION_JSON, OpenstackNetProxyConstants.TYPE_RDF})
 	public Response showQuota(@PathParam("tenantId") String tenantId, @HeaderParam("Accept") String accept) throws MalformedURLException, IOException{
 		//Send HTTP request and receive a single Json content identified by an ID
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
 		String response=HTTPConnector.printStream(conn);
 		Object result;
 		result=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
@@ -86,7 +86,7 @@ public class QuotaRestInterface {
 	@DELETE
 	@Path("/v2.0/quotas/{tenantId}")
 	public Response resetQuota(@PathParam("tenantId") String tenantId) throws MalformedURLException, IOException{
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_DELETE, null);
 		int responseCode=conn.getResponseCode();
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId);
@@ -105,7 +105,7 @@ public class QuotaRestInterface {
 		quota = JsonUtility.fromResponseStringToObject(request,Quota.class);
 		String input = JsonUtility.toJsonString(quota);
 		//Connect to a REST service
-		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
+		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+tenantId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
 		Quota q=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);

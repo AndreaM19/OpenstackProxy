@@ -31,7 +31,7 @@ public class ParliamentModel {
 		{
 			//it connects to the server with Parliament and execute the query
 			QueryExecution exec = QueryExecutionFactory.sparqlService(
-					"http://localhost:8080/parliament/sparql",
+					"http://192.168.43.16:8080/parliament/sparql",
 					query);
 
 			ResultSet rs = exec.execSelect();
@@ -69,7 +69,7 @@ public class ParliamentModel {
 			UpdateRequest request = UpdateFactory.create(queryString);
 			//it connects to the server with Parliament and execute the query
 			UpdateProcessor processor = UpdateExecutionFactory
-				    .createRemoteForm(request, "http://localhost:8080/parliament/sparql");
+				    .createRemoteForm(request, "http://192.168.43.16:8080/parliament/sparql");
 				processor.execute();
 		}
 		finally
