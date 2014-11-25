@@ -3,23 +3,24 @@ package it.univpm.idstid.openstack.network.proxy.entity.extended;
 import com.google.gson.annotations.SerializedName;
 
 import it.univpm.idstid.openstack.network.proxy.entity.PortData;
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.Profile;
 
 public class ExtendedPortData extends PortData {
 	
 	@SerializedName("binding:vif_type")
-	private String vif_type="-";
+	private String vif_type;
 	@SerializedName("binding:host_id")
-	private String host_id="-";
+	private String host_id;
 	@SerializedName("binding:profile")
-	private String profile="-";
+	private Profile profile;
 	@SerializedName("binding:capabilities")
-	private String capabilities="-";
+	private String capabilities;
 	
 	public ExtendedPortData(){
 		
 	}
 	
-	public ExtendedPortData(String vif_type, String host_id, String profile,
+	public ExtendedPortData(String vif_type, String host_id, Profile profile,
 			String capabilities) {
 		this.vif_type = vif_type;
 		this.host_id = host_id;
@@ -43,10 +44,10 @@ public class ExtendedPortData extends PortData {
 	public void setHost_id(String host_id) {
 		this.host_id = host_id;
 	}
-	public String getProfile() {
+	public Profile getProfile() {
 		return profile;
 	}
-	public void setProfile(String profile) {
+	public void setProfile(Profile profile) {
 		this.profile = profile;
 	}
 	public String getCapabilities() {

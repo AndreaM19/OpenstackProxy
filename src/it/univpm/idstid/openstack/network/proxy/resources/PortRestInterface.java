@@ -7,6 +7,7 @@ import java.net.URL;
 
 import it.univpm.idstid.openstack.network.parliament.PortOntology;
 import it.univpm.idstid.openstack.network.proxy.entity.Port;
+import it.univpm.idstid.openstack.network.proxy.entity.extended.ExtendedPort;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
 import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
@@ -63,7 +64,7 @@ public class PortRestInterface {
 			HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
 			String response=HTTPConnector.printStream(conn);
 			Object result;
-			result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+			result=(ExtendedPort) JsonUtility.fromResponseStringToObject(response, ExtendedPort.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
 			return Response.status(responseCode).entity(result).build();
@@ -87,7 +88,7 @@ public class PortRestInterface {
 			HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+portId), OpenstackNetProxyConstants.HTTP_METHOD_GET, null);
 			String response=HTTPConnector.printStream(conn);
 			Object result;
-			result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+			result=(ExtendedPort) JsonUtility.fromResponseStringToObject(response, ExtendedPort.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
 			return Response.status(responseCode).entity(result).build();
@@ -101,7 +102,7 @@ public class PortRestInterface {
 	public Response createPort(final String request) throws MalformedURLException, IOException{
 		//Convert input object NetworkData into a String like a Json text
 		Object port;
-		port = JsonUtility.fromResponseStringToObject(request,Port.class);
+		port = JsonUtility.fromResponseStringToObject(request,ExtendedPort.class);
 		String input = JsonUtility.toJsonString(port);
 		System.out.println(input);
 		//Connect to a REST service
@@ -110,15 +111,15 @@ public class PortRestInterface {
 		String response=HTTPConnector.printStream(conn);
 		Object result;
 		if(response.equals("Multiple created")) result=response;
-		else result=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+		else result=(ExtendedPort) JsonUtility.fromResponseStringToObject(response, ExtendedPort.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		//Insert data into the Knowledge Base
-//		if (responseCode==201){
-//			Port p=(Port)result;
-//			if(p.getPorts()==null)PortOntology.insertPort(p, null);
-//			else PortOntology.insertMultiplePorts(p);
-//		}
+		if (responseCode==201){
+			ExtendedPort p=(ExtendedPort)result;
+			if(p.getPorts()==null)PortOntology.insertExtendedPort(p, null);
+			else PortOntology.insertMultipleExtendedPorts(p);
+		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
@@ -146,7 +147,7 @@ public class PortRestInterface {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response updatePort(@PathParam("portId") String portId, final String request) throws MalformedURLException, IOException{
 		Object port;
-		port = JsonUtility.fromResponseStringToObject(request,Port.class);
+		port = JsonUtility.fromResponseStringToObject(request,ExtendedPort.class);
 		//Convert input object NetworkData into a String like a Json text
 		String input = JsonUtility.toJsonString(port);
 		//Connect to a REST service
@@ -154,11 +155,11 @@ public class PortRestInterface {
 		HttpURLConnection conn=HTTPConnector.HTTPConnect(new URL(this.URLpath+"/"+portId), OpenstackNetProxyConstants.HTTP_METHOD_PUT, input);
 		//Get the response text from the REST service
 		String response=HTTPConnector.printStream(conn);
-		Port p=(Port) JsonUtility.fromResponseStringToObject(response, Port.class);
+		ExtendedPort p=(ExtendedPort) JsonUtility.fromResponseStringToObject(response, ExtendedPort.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		if (responseCode==200){
-//			PortOntology.updatePort(p);
+			PortOntology.updateExtendedPort(p);
 		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(p).build();

@@ -13,81 +13,81 @@ import it.univpm.idstid.openstack.network.proxy.entity.other.objects.SecourityGr
 
 public class PortOntology{
 
-	public static void insertPort(Port prt, PortData d){
-		
-		PortData data;
-		
-		if (prt!=null) //call from the Rest Interface
-			data = prt.getPort();
-		else  //call from createMultiple
-			data=d;
-		
-		//Recover the port object (from the Rest Interface) attributes
-		String name = data.getName();
-		String n = data.getId();
-		FixedIps fixed = data.getFixed_ips();
-		String mac = data.getMac_address();
-		String network = data.getNetwork_id();
-		SecourityGroups security = data.getSecurity_groups();
-		String status = data.getStatus();
-		String tenant = data.getTenant_id();
-					
-		//query- insert a port instance in the OWL knowledge base
-		String queryString = 
-				"PREFIX base: <http://www.semanticweb.org/spalazzi/ontologies/2014/1/FedCoT#> "+
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#/> "+
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#/> "+
-				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#/> "+
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#/> ";
-		for (int i=0; i<fixed.size(); i++)
-		{
-			Ip ip = fixed.get(i);
-
-				queryString += 
-					"INSERT DATA " +
-					"{" +
-					"      base:"+ip.getIp_address()+" rdf:type base:FixedIP;" +
-					"      }; ";
-		}
-		for (int j=0; j<security.size(); j++)
-		{
-			queryString += 
-				"INSERT DATA " +
-				"{" +
-				"      base:"+security.get(j)+" rdf:type base:SecurityGroup;" +
-				"      }; ";
-		}
-		queryString += 
-				"INSERT DATA " +
-				"{" +
-				"      base:"+tenant+" rdf:type base:Tenant;" +
-				"      }; "+  
-				"INSERT DATA " +
-				"{" +
-				"      base:"+n+" rdf:type base:Port;" +
-				"      base:hasName '"+name+"';";
-		for (int i=0; i<fixed.size(); i++)
-		{
-			Ip ip = fixed.get(i);
-
-			queryString += 
-			"      base:hasFixedIP base:"+ip.getIp_address()+";";
-		}
-		for (int j=0; j<security.size(); j++)
-		{
-			queryString += 
-			"      base:hasSecurityGroup base:"+security.get(j)+";";
-		}
-		queryString += 				
-				"      base:hasMACAddress '"+mac+"';" +
-				"      base:isPartOfNetwork base:"+network+";" +
-				"      base:hasStatus '"+status+"';" +
-				"      base:hasOwner base:"+tenant+";" +
-				"      }";
-
-		ParliamentModel.updateQuery(queryString);
-		
-	}
+//	public static void insertPort(Port prt, PortData d){
+//		
+//		PortData data;
+//		
+//		if (prt!=null) //call from the Rest Interface
+//			data = prt.getPort();
+//		else  //call from createMultiple
+//			data=d;
+//		
+//		//Recover the port object (from the Rest Interface) attributes
+//		String name = data.getName();
+//		String n = data.getId();
+//		FixedIps fixed = data.getFixed_ips();
+//		String mac = data.getMac_address();
+//		String network = data.getNetwork_id();
+//		SecourityGroups security = data.getSecurity_groups();
+//		String status = data.getStatus();
+//		String tenant = data.getTenant_id();
+//					
+//		//query- insert a port instance in the OWL knowledge base
+//		String queryString = 
+//				"PREFIX base: <http://www.semanticweb.org/spalazzi/ontologies/2014/1/FedCoT#> "+
+//				"PREFIX owl: <http://www.w3.org/2002/07/owl#/> "+
+//				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#/> "+
+//				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#/> "+
+//				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#/> ";
+//		for (int i=0; i<fixed.size(); i++)
+//		{
+//			Ip ip = fixed.get(i);
+//
+//				queryString += 
+//					"INSERT DATA " +
+//					"{" +
+//					"      base:"+ip.getIp_address()+" rdf:type base:FixedIP;" +
+//					"      }; ";
+//		}
+//		for (int j=0; j<security.size(); j++)
+//		{
+//			queryString += 
+//				"INSERT DATA " +
+//				"{" +
+//				"      base:"+security.get(j)+" rdf:type base:SecurityGroup;" +
+//				"      }; ";
+//		}
+//		queryString += 
+//				"INSERT DATA " +
+//				"{" +
+//				"      base:"+tenant+" rdf:type base:Tenant;" +
+//				"      }; "+  
+//				"INSERT DATA " +
+//				"{" +
+//				"      base:"+n+" rdf:type base:Port;" +
+//				"      base:hasName '"+name+"';";
+//		for (int i=0; i<fixed.size(); i++)
+//		{
+//			Ip ip = fixed.get(i);
+//
+//			queryString += 
+//			"      base:hasFixedIP base:"+ip.getIp_address()+";";
+//		}
+//		for (int j=0; j<security.size(); j++)
+//		{
+//			queryString += 
+//			"      base:hasSecurityGroup base:"+security.get(j)+";";
+//		}
+//		queryString += 				
+//				"      base:hasMACAddress '"+mac+"';" +
+//				"      base:isPartOfNetwork base:"+network+";" +
+//				"      base:hasStatus '"+status+"';" +
+//				"      base:hasOwner base:"+tenant+";" +
+//				"      }";
+//
+//		ParliamentModel.updateQuery(queryString);
+//		
+//	}
 	
   	public static void insertExtendedPort(ExtendedPort ePrt, ExtendedPortData d){ 		
   		
@@ -173,18 +173,18 @@ public class PortOntology{
 	}
   	
   
-	public static void insertMultiplePorts(Port prt){
-		
-		//Recover the arraylist with all the PortData from the Rest Interface MultipleCreate  
-		ArrayList<PortData> multiData = prt.getPorts();
-		
-		//call insertPort for every port PortData object
-		for (int i=0; multiData.size()<i; i++)
-		{
-			insertPort(null, multiData.get(i));
-		}
-		
-	}
+//	public static void insertMultiplePorts(Port prt){
+//		
+//		//Recover the arraylist with all the PortData from the Rest Interface MultipleCreate  
+//		ArrayList<PortData> multiData = prt.getPorts();
+//		
+//		//call insertPort for every port PortData object
+//		for (int i=0; multiData.size()<i; i++)
+//		{
+//			insertPort(null, multiData.get(i));
+//		}
+//		
+//	}
 	
 	public static void insertMultipleExtendedPorts(ExtendedPort ePrt){
 		
@@ -199,73 +199,73 @@ public class PortOntology{
 		
 	}
 	
-	public static void updatePort(Port prt){
-		
-		PortData data = prt.getPort();
-		
-		//Recover the port object (from the Rest Interface) attributes
-		String name = data.getName();
-		String n = data.getId();
-		FixedIps fixed = data.getFixed_ips();
-		String mac = data.getMac_address();
-		String network = data.getNetwork_id();
-		SecourityGroups security = data.getSecurity_groups();
-		String status = data.getStatus();
-		String tenant = data.getTenant_id();
-		
-		//query- update a port instance
-		String queryString = 
-				"PREFIX base: <http://www.semanticweb.org/spalazzi/ontologies/2014/1/FedCoT#> "+
-				"PREFIX owl: <http://www.w3.org/2002/07/owl#/> "+
-				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#/> "+
-				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#/> "+
-				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#/> "+
-				"DELETE WHERE { base:"+n+" ?p ?o. }; ";
-		for (int i=0; i<fixed.size(); i++)
-		{
-			Ip ip = fixed.get(i);
-
-				queryString += 
-					"INSERT DATA " +
-					"{" +
-					"      base:"+ip.getIp_address()+" rdf:type base:FixedIP;" +
-					"      }; ";
-		}
-		for (int j=0; j<security.size(); j++)
-		{
-			queryString += 
-				"INSERT DATA " +
-				"{" +
-				"      base:"+security.get(j)+" rdf:type base:SecurityGroup;" +
-				"      }; ";
-		}
-		queryString += 
-				"INSERT DATA " +
-				"{" +
-				"      base:"+n+" rdf:type base:Port;" +
-				"      base:hasName '"+name+"';";
-		for (int i=0; i<fixed.size(); i++)
-		{
-			Ip ip = fixed.get(i);
-
-			queryString += 
-			"      base:hasFixedIP base:"+ip.getIp_address()+";";
-		}
-		for (int j=0; j<security.size(); j++)
-		{
-			queryString += 
-			"      base:hasSecurityGroup base:"+security.get(j)+";";
-		}
-		queryString += 				
-				"      base:hasMACAddress '"+mac+"';" +
-				"      base:isPartOfNetwork base:"+network+";" +
-				"      base:hasStatus '"+status+"';" +
-				"      base:hasOwner base:"+tenant+";" +
-				"      }";
-
-		ParliamentModel.updateQuery(queryString);
-		
-	}
+//	public static void updatePort(Port prt){
+//		
+//		PortData data = prt.getPort();
+//		
+//		//Recover the port object (from the Rest Interface) attributes
+//		String name = data.getName();
+//		String n = data.getId();
+//		FixedIps fixed = data.getFixed_ips();
+//		String mac = data.getMac_address();
+//		String network = data.getNetwork_id();
+//		SecourityGroups security = data.getSecurity_groups();
+//		String status = data.getStatus();
+//		String tenant = data.getTenant_id();
+//		
+//		//query- update a port instance
+//		String queryString = 
+//				"PREFIX base: <http://www.semanticweb.org/spalazzi/ontologies/2014/1/FedCoT#> "+
+//				"PREFIX owl: <http://www.w3.org/2002/07/owl#/> "+
+//				"PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#/> "+
+//				"PREFIX xsd: <http://www.w3.org/2001/XMLSchema#/> "+
+//				"PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#/> "+
+//				"DELETE WHERE { base:"+n+" ?p ?o. }; ";
+//		for (int i=0; i<fixed.size(); i++)
+//		{
+//			Ip ip = fixed.get(i);
+//
+//				queryString += 
+//					"INSERT DATA " +
+//					"{" +
+//					"      base:"+ip.getIp_address()+" rdf:type base:FixedIP;" +
+//					"      }; ";
+//		}
+//		for (int j=0; j<security.size(); j++)
+//		{
+//			queryString += 
+//				"INSERT DATA " +
+//				"{" +
+//				"      base:"+security.get(j)+" rdf:type base:SecurityGroup;" +
+//				"      }; ";
+//		}
+//		queryString += 
+//				"INSERT DATA " +
+//				"{" +
+//				"      base:"+n+" rdf:type base:Port;" +
+//				"      base:hasName '"+name+"';";
+//		for (int i=0; i<fixed.size(); i++)
+//		{
+//			Ip ip = fixed.get(i);
+//
+//			queryString += 
+//			"      base:hasFixedIP base:"+ip.getIp_address()+";";
+//		}
+//		for (int j=0; j<security.size(); j++)
+//		{
+//			queryString += 
+//			"      base:hasSecurityGroup base:"+security.get(j)+";";
+//		}
+//		queryString += 				
+//				"      base:hasMACAddress '"+mac+"';" +
+//				"      base:isPartOfNetwork base:"+network+";" +
+//				"      base:hasStatus '"+status+"';" +
+//				"      base:hasOwner base:"+tenant+";" +
+//				"      }";
+//
+//		ParliamentModel.updateQuery(queryString);
+//		
+//	}
 	
 	
   	public static void updateExtendedPort(ExtendedPort ePrt){
@@ -281,7 +281,7 @@ public class PortOntology{
 		SecourityGroups security = extData.getSecurity_groups();
 		String status = extData.getStatus();
 		String tenant = extData.getTenant_id();
-		String host = extData.getHost_id();
+//		String host = extData.getHost_id();
   		
 		//query- update a port instance with extended attributes
   		String queryString = 
@@ -310,10 +310,10 @@ public class PortOntology{
 				"      }; ";
 		}
 		queryString += 
-				"INSERT DATA " +
-				"{" +
-				"      base:"+host+" rdf:type base:HNode;" +
-				"      }; "+ 
+//				"INSERT DATA " +
+//				"{" +
+//				"      base:"+host+" rdf:type base:HNode;" +
+//				"      }; "+ 
 				"INSERT DATA " +
 				"{" +
 				"      base:"+n+" rdf:type base:Port;" +
@@ -335,7 +335,7 @@ public class PortOntology{
 				"      base:isPartOfNetwork base:"+network+";" +
 				"      base:hasStatus '"+status+"';" +
 				"      base:hasOwner base:"+tenant+";" +
-				"      base:hasHNode base:"+host+";" +
+//				"      base:hasHNode base:"+host+";" +
 				"      }";
 
 		ParliamentModel.updateQuery(queryString);

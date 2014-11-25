@@ -25,16 +25,16 @@ public class ExtendedNetworkData extends NetworkData {
 		this.segmentation_id = segmentation_id;
 	}
 
+	
 	//---------------------------------------------------------------
 	// Getter and Setter
 	//---------------------------------------------------------------
 
-	
 	public String getNetwork_type() {
 		return network_type;
 	}
 
-	public void setNetworkType(String network_type) {
+	public void setNetwork_type(String network_type) {
 		this.network_type = network_type;
 	}
 
@@ -54,4 +54,5 @@ public class ExtendedNetworkData extends NetworkData {
 		this.segmentation_id = segmentation_id;
 	}
 
+	
 }
