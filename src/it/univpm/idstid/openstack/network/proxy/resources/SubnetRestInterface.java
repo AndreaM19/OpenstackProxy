@@ -68,7 +68,7 @@ public class SubnetRestInterface {
 			result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
-			return Response.status(responseCode).entity(result).build();
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}
 	}
 
@@ -92,7 +92,7 @@ public class SubnetRestInterface {
 			result=(Subnet) JsonUtility.fromResponseStringToObject(response, Subnet.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
-			return Response.status(responseCode).entity(result).build();
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}
 	}
 
@@ -116,9 +116,9 @@ public class SubnetRestInterface {
 		HTTPConnector.HTTPDisconnect(conn);
 		//Insert data into the Knowledge Base
 		if (responseCode==201){
-			Subnet s=(Subnet)result;
-			if(s.getSubnets()==null)SubnetOntology.insertSubnet(s, null);
-			else SubnetOntology.insertMultipleSubnets(s);
+//			Subnet s=(Subnet)result;
+//			if(s.getSubnets()==null)SubnetOntology.insertSubnet(s, null);
+//			else SubnetOntology.insertMultipleSubnets(s);
 		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
@@ -134,7 +134,7 @@ public class SubnetRestInterface {
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId);
 			//Delete resource in the Knowledge Base
-			SubnetOntology.deleteSubnet(subnetId);
+//			SubnetOntology.deleteSubnet(subnetId);
 			//Build the response
 			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_DELETED_SUBNET_RESOURCE+subnetId).build();
 		}
@@ -158,7 +158,7 @@ public class SubnetRestInterface {
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		if (responseCode==200){
-			SubnetOntology.updateSubnet(s);
+//			SubnetOntology.updateSubnet(s);
 		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(s).build();

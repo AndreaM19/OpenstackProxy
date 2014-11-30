@@ -63,7 +63,7 @@ public class QuotaRestInterface {
 			result=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
-			return Response.status(responseCode).entity(result).build();
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}
 	}
 
@@ -79,7 +79,7 @@ public class QuotaRestInterface {
 		result=(Quota) JsonUtility.fromResponseStringToObject(response, Quota.class);
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
-		return Response.status(responseCode).entity(result).build();
+		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 	}
 
 	//Reset Quotas
@@ -90,9 +90,9 @@ public class QuotaRestInterface {
 		int responseCode=conn.getResponseCode();
 		if(responseCode==204){
 			System.out.println(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId);
-			return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId).build();
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_RESET_QUOTA_RESOURCE+tenantId).build();
 		}
-		else return Response.status(responseCode).entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
+		else return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(OpenstackNetProxyConstants.MESSAGE_FAIL).build();
 	}
 
 	//Update Quota

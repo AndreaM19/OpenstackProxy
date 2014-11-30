@@ -26,19 +26,19 @@ public class ExtendedNetwork {
 	// Getter and Setter
 	//---------------------------------------------------------------
 
-	public ExtendedNetworkData getExtendedNetwork() {
+	public ExtendedNetworkData getNetwork() {
 		return network;
 	}
 
-	public void setExtendedNetwork(ExtendedNetworkData network) {
+	public void setNetwork(ExtendedNetworkData network) {
 		this.network = network;
 	}
 
-	public ArrayList<ExtendedNetworkData> getExtendedNetworks() {
+	public ArrayList<ExtendedNetworkData> getNetworks() {
 		return networks;
 	}
 
-	public void setExtendedNetworks(ArrayList<ExtendedNetworkData> networks) {
+	public void setNetworks(ArrayList<ExtendedNetworkData> networks) {
 		this.networks = networks;
 	}
 

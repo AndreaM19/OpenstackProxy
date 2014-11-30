@@ -2,8 +2,8 @@ package it.univpm.idstid.openstack.network.parliament;
 
 import java.util.ArrayList;
 
-import it.univpm.idstid.openstack.network.proxy.entity.Network;
-import it.univpm.idstid.openstack.network.proxy.entity.NetworkData;
+//import it.univpm.idstid.openstack.network.proxy.entity.Network;
+//import it.univpm.idstid.openstack.network.proxy.entity.NetworkData;
 import it.univpm.idstid.openstack.network.proxy.entity.extended.ExtendedNetwork;
 import it.univpm.idstid.openstack.network.proxy.entity.extended.ExtendedNetworkData;
 
@@ -54,7 +54,7 @@ public class NetworkOntology{
 		ExtendedNetworkData extData;
 			
 		if (net!=null) //call from the Rest Interface
-			extData = net.getExtendedNetwork();		
+			extData = net.getNetwork();		
 		else //call from createMultiple
 			extData=d;
 
@@ -67,7 +67,7 @@ public class NetworkOntology{
 		String type=extData.getNetwork_type();
 		String physical=extData.getPhysical_network();
 		
-		//query- insert a network instance with the Extended attributes
+		//query- insert a network instance with the Extended attributes (extended attributes only if they are present)
 		String queryString = 
 				"PREFIX base: <http://www.semanticweb.org/spalazzi/ontologies/2014/1/FedCoT#> "+
 				"PREFIX owl: <http://www.w3.org/2002/07/owl#/> "+
@@ -77,20 +77,32 @@ public class NetworkOntology{
 				"INSERT DATA " +
 				"{" +
 				"      base:"+tenant+" rdf:type base:Tenant;" +
-				"      }; "+  
+				"      }; ";
+		if (physical!=null){
+			queryString += 
 				"INSERT DATA " +
 				"{" +
 				"      base:"+physical+" rdf:type base:PhysicalNetwork;" +
-				"      }; "+   
+				"      }; ";
+		}
+		queryString += 
 				"INSERT DATA " +
 				"{" +			
 				"      base:"+n+" rdf:type base:Network;" +			
 				"      base:hasName '"+name+"';" +
 				"      base:isShared "+shared+";" +
-				"      base:hasStatus '"+status+"';" +
-				"      base:ofType '"+type+"';" +
-				"      base:hasOwner base:"+tenant+";" +
-				"      base:hasPhysicalResource base:"+physical+";" +
+				"      base:hasStatus '"+status+"';";
+		if (type!=null){
+			queryString += 
+				"      base:ofType '"+type+"';";
+		}
+		queryString += 
+				"      base:hasOwner base:"+tenant+";";
+		if (physical!=null){
+			queryString += 
+				"      base:hasPhysicalResource base:"+physical+";";
+		}	
+		queryString += 
 				"      }";
 
 		ParliamentModel.updateQuery(queryString);
@@ -113,7 +125,7 @@ public class NetworkOntology{
 	public static void insertMultipleExtendedNetworks(ExtendedNetwork eNet){
 		
 		//Recover the arraylist with all the NetworkData from the Rest Interface MultipleCreate
-		ArrayList<ExtendedNetworkData> multiExtData = eNet.getExtendedNetworks();
+		ArrayList<ExtendedNetworkData> multiExtData = eNet.getNetworks();
 		
 		//call insertNetwork for every network NetworkData object
 		for (int i=0; multiExtData.size()<i; i++)
@@ -157,9 +169,9 @@ public class NetworkOntology{
 	
 	public static void updateExtendedNetwork(ExtendedNetwork eNet){
 		
-		ExtendedNetworkData extData = eNet.getExtendedNetwork();
+		ExtendedNetworkData extData = eNet.getNetwork();
 		
-		//Recover the network object (from the Rest Interface) attributes
+		//Recover the network object (from the Rest Interface) attributes (extended attributes only if they are present)
 		String name=extData.getName();
 		String n=extData.getId();	
 		String shared=extData.isShared();	
@@ -178,17 +190,33 @@ public class NetworkOntology{
 				"DELETE WHERE { base:"+n+" ?p ?o. }; "+
 				"INSERT DATA " +
 				"{" +
+				"      base:"+tenant+" rdf:type base:Tenant;" +
+				"      }; ";
+		if (physical!=null){
+			queryString += 
+				"INSERT DATA " +
+				"{" +
 				"      base:"+physical+" rdf:type base:PhysicalNetwork;" +
-				"      }; "+   
+				"      }; ";
+		}
+		queryString += 
 				"INSERT DATA " +
 				"{" +			
 				"      base:"+n+" rdf:type base:Network;" +			
 				"      base:hasName '"+name+"';" +
 				"      base:isShared "+shared+";" +
-				"      base:hasStatus '"+status+"';" +
-				"      base:ofType '"+type+"';" +
-				"      base:hasOwner base:"+tenant+";" +
-				"      base:hasPhysicalResource base:"+physical+";" +
+				"      base:hasStatus '"+status+"';";
+		if (type!=null){
+			queryString += 
+				"      base:ofType '"+type+"';";
+		}
+		queryString += 
+				"      base:hasOwner base:"+tenant+";";
+		if (physical!=null){
+			queryString += 
+				"      base:hasPhysicalResource base:"+physical+";";
+		}	
+		queryString += 
 				"      }";
 
 		ParliamentModel.updateQuery(queryString);

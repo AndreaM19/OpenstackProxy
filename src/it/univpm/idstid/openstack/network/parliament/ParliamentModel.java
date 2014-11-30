@@ -1,5 +1,7 @@
 package it.univpm.idstid.openstack.network.parliament;
 
+import it.univpm.idstid.openstack.network.proxy.var.OpenstackNetProxyConstants;
+
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
 
@@ -31,7 +33,7 @@ public class ParliamentModel {
 		{
 			//it connects to the server with Parliament and execute the query
 			QueryExecution exec = QueryExecutionFactory.sparqlService(
-					"http://192.168.43.16:8080/parliament/sparql",
+					OpenstackNetProxyConstants.URL_PARLIAMENT,
 					query);
 
 			ResultSet rs = exec.execSelect();
@@ -69,7 +71,7 @@ public class ParliamentModel {
 			UpdateRequest request = UpdateFactory.create(queryString);
 			//it connects to the server with Parliament and execute the query
 			UpdateProcessor processor = UpdateExecutionFactory
-				    .createRemoteForm(request, "http://192.168.43.16:8080/parliament/sparql");
+				    .createRemoteForm(request, OpenstackNetProxyConstants.URL_PARLIAMENT);
 				processor.execute();
 		}
 		finally

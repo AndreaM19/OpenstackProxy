@@ -67,7 +67,7 @@ public class PortRestInterface {
 			result=(ExtendedPort) JsonUtility.fromResponseStringToObject(response, ExtendedPort.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
-			return Response.status(responseCode).entity(result).build();
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}
 	}
 
@@ -91,7 +91,7 @@ public class PortRestInterface {
 			result=(ExtendedPort) JsonUtility.fromResponseStringToObject(response, ExtendedPort.class);
 			int responseCode=conn.getResponseCode();
 			HTTPConnector.HTTPDisconnect(conn);
-			return Response.status(responseCode).entity(result).build();
+			return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
 		}
 	}
 
@@ -116,9 +116,9 @@ public class PortRestInterface {
 		HTTPConnector.HTTPDisconnect(conn);
 		//Insert data into the Knowledge Base
 		if (responseCode==201){
-			ExtendedPort p=(ExtendedPort)result;
-			if(p.getPorts()==null)PortOntology.insertExtendedPort(p, null);
-			else PortOntology.insertMultipleExtendedPorts(p);
+//			ExtendedPort p=(ExtendedPort)result;
+//			if(p.getPorts()==null)PortOntology.insertExtendedPort(p, null);
+//			else PortOntology.insertMultipleExtendedPorts(p);
 		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(result).build();
@@ -159,7 +159,7 @@ public class PortRestInterface {
 		int responseCode=conn.getResponseCode();
 		HTTPConnector.HTTPDisconnect(conn);
 		if (responseCode==200){
-			PortOntology.updateExtendedPort(p);
+//			PortOntology.updateExtendedPort(p);
 		}
 		//Build the response
 		return Response.status(responseCode).header("Access-Control-Allow-Origin", "*").entity(p).build();

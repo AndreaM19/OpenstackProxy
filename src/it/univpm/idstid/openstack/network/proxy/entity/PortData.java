@@ -1,7 +1,7 @@
 package it.univpm.idstid.openstack.network.proxy.entity;
 
 import it.univpm.idstid.openstack.network.proxy.entity.other.objects.FixedIps;
-import it.univpm.idstid.openstack.network.proxy.entity.other.objects.SecourityGroups;
+import it.univpm.idstid.openstack.network.proxy.entity.other.objects.SecurityGroups;
 
 public class PortData {
 
@@ -15,7 +15,7 @@ public class PortData {
 	private String device_id;
 	private String device_owner;
 	private String tenant_id;
-	private SecourityGroups security_groups;
+	private SecurityGroups security_groups;
 
 	public PortData(){
 
@@ -24,7 +24,7 @@ public class PortData {
 	public PortData(String id, String name, String mac_address,
 			String network_id, boolean admin_state_up, String status,
 			FixedIps fixed_ips, String device_id, String device_owner,
-			String tenant_id, SecourityGroups security_groups) {
+			String tenant_id, SecurityGroups security_groups) {
 		this.id = id;
 		this.name = name;
 		this.mac_address = mac_address;
@@ -122,11 +122,11 @@ public class PortData {
 		this.tenant_id = tenant_id;
 	}
 
-	public SecourityGroups getSecurity_groups() {
+	public SecurityGroups getSecurity_groups() {
 		return security_groups;
 	}
 
-	public void setSecurity_groups(SecourityGroups security_groups) {
+	public void setSecurity_groups(SecurityGroups security_groups) {
 		this.security_groups = security_groups;
 	}
 
