@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.parliament.NetworkOntology;
-import it.univpm.idstid.openstack.network.proxy.entity.Network;
 import it.univpm.idstid.openstack.network.proxy.entity.extended.ExtendedNetwork;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
@@ -24,7 +23,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.gson.Gson;
 
 @Path("/network")
 public class NetworkRestInterface {

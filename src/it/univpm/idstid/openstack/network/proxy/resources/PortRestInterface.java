@@ -6,7 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import it.univpm.idstid.openstack.network.parliament.PortOntology;
-import it.univpm.idstid.openstack.network.proxy.entity.Port;
 import it.univpm.idstid.openstack.network.proxy.entity.extended.ExtendedPort;
 import it.univpm.idstid.openstack.network.proxy.utility.HTTPConnector;
 import it.univpm.idstid.openstack.network.proxy.utility.JsonUtility;
